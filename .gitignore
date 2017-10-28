@@ -1,0 +1,14 @@
+/*.rar
+/*.db
+/bin/Win32/*.iobj
+/bin/Win32/*.ipdb
+/bin/Win32/*.pdb
+/bin/x64/*.ilk
+/bin/x64/*.pdb
+/bin/x64/*.ipdb
+/bin/x64/*.iobj
+/PointCloudBP/x64
+/PointCloudBP/*.aps
+/bin/Win32/PointCloudBP.exe
+/bin/x64/PointCloudBP.exe
+/bin/x64/PointCloudBPd.exe

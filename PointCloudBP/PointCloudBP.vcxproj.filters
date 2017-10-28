@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="glsl">
+      <UniqueIdentifier>{5cd458b0-adf2-4f73-ba72-42ca1d227ae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ingredients">
+      <UniqueIdentifier>{bd5478c8-0c9b-4c54-93db-4a60796284a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IO">
+      <UniqueIdentifier>{dcd45c60-563f-4773-b5b1-85e8970cf48a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphic">
+      <UniqueIdentifier>{6f063d8d-9043-44f0-b69c-a55baa46dae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="glScene">
+      <UniqueIdentifier>{61b81fbc-9258-43cd-a730-76a06701a981}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="res\PointCloudBP.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\PointCloudBPDoc.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\PointCloudBP.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\glsl\subroutine.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\glsl\subroutine.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\glsl\vshader.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\glsl\fshader.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\glsl\minimal.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\glsl\minimal.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\glsl\pointcloud.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\glsl\pointcloud.vert">
+      <Filter>glsl</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\ingredients\drawable.h">
+      <Filter>ingredients</Filter>
+    </ClInclude>
+    <ClInclude Include="TxtFile.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="FileObj.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="LasFile.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundBox.h">
+      <Filter>Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicalObject.h">
+      <Filter>Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCloudBP.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCloudBPDoc.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCloudBPView.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GPoint.h">
+      <Filter>Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="GPointCloud.h">
+      <Filter>Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ingredients\scene.h">
+      <Filter>glScene</Filter>
+    </ClInclude>
+    <ClInclude Include="ScenePointCloud.h">
+      <Filter>glScene</Filter>
+    </ClInclude>
+    <ClInclude Include="threadfunction.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\ingredients\glslprogram.cpp">
+      <Filter>ingredients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ingredients\glutils.cpp">
+      <Filter>ingredients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ingredients\vbotorus.cpp">
+      <Filter>ingredients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ingredients\gl_core_4_4.c">
+      <Filter>ingredients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ingredients\drawable.cpp">
+      <Filter>ingredients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ingredients\vboteapot.cpp">
+      <Filter>ingredients</Filter>
+    </ClCompile>
+    <ClCompile Include="TxtFile.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="FileObj.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="LasFile.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="lasreader.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="laswriter.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundBox.cpp">
+      <Filter>Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicalObject.cpp">
+      <Filter>Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PointCloudBP.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PointCloudBPDoc.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PointCloudBPView.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GPoint.cpp">
+      <Filter>Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="GPointCloud.cpp">
+      <Filter>Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>glScene</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenePointCloud.cpp">
+      <Filter>glScene</Filter>
+    </ClCompile>
+    <ClCompile Include="threadfunction.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PointCloudBP.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
