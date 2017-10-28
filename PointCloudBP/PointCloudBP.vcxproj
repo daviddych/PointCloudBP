@@ -230,6 +230,7 @@
     <ClInclude Include="PointCloudBP.h" />
     <ClInclude Include="PointCloudBPDoc.h" />
     <ClInclude Include="PointCloudBPView.h" />
+    <ClInclude Include="ProgressStatusDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ScenePointCloud.h" />
     <ClInclude Include="stdafx.h" />
@@ -270,6 +271,7 @@
     <ClCompile Include="PointCloudBP.cpp" />
     <ClCompile Include="PointCloudBPDoc.cpp" />
     <ClCompile Include="PointCloudBPView.cpp" />
+    <ClCompile Include="ProgressStatusDlg.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="ScenePointCloud.cpp" />
     <ClCompile Include="stdafx.cpp">

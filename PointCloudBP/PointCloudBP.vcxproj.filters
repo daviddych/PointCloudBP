@@ -116,6 +116,9 @@
     <ClInclude Include="threadfunction.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="ProgressStatusDlg.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ingredients\glslprogram.cpp">
@@ -185,6 +188,9 @@
       <Filter>glScene</Filter>
     </ClCompile>
     <ClCompile Include="threadfunction.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressStatusDlg.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
   </ItemGroup>

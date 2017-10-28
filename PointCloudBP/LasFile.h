@@ -14,7 +14,6 @@ public:
 
 private:
 	LASreader  *m_lasreader;
-	LASheader  *header;
-	bool read(std::string filename);
+	static bool read(LasFile* lasf, std::string filename);
 };
 

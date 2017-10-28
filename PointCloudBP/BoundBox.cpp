@@ -24,6 +24,9 @@ BoundBox::BoundBox(vec3 lb , vec3 ru)
 
 BoundBox::BoundBox(BoundBox* box)
 {
+	if (box == nullptr)
+		return;
+
 	_leftbottom = box->_leftbottom;
 	_rightup = box->_rightup;
 	_center = (_leftbottom + _rightup) / 2.0f;

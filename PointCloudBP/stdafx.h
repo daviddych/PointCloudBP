@@ -42,6 +42,7 @@
 
 
 //#pragma comment(lib, "glew32.lib")
+#define WM_LOADFILE_COMPLETE_MSG WM_USER+1001
 
 
 

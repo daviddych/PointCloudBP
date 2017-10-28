@@ -5,6 +5,7 @@
 
 #pragma once
 #include "GPointCloud.h"
+#include "FileObj.h"
 
 
 class CPointCloudBPDoc : public CDocument
@@ -51,4 +52,5 @@ protected:
 #endif // SHARED_HANDLERS
 public:
 	afx_msg void OnFileOpen();
+	FileObj *m_fileobj;
 };

@@ -8,21 +8,19 @@
 #include <string>
 #include <CONIO.H>
 #include <algorithm>
+#include "Resource.h"
 
 CTxtFile::CTxtFile()
 {
 }
 bool CTxtFile::openfile(const char* filename)
 {
-	if (!openfile_mapping(filename))
-		return false;
+	boost::thread t{ CTxtFile::openfile_mapping, this, filename };
 	
-	m_offset = center(m_xyz);
-	normalize(m_xyz, m_offset);
 	return true;
 }
 
-bool CTxtFile::openfile_mapping(CString filename /*= CString("")*/)
+bool CTxtFile::openfile_mapping(CTxtFile* txtf, CString filename)
 {
 	HANDLE hFile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	
@@ -41,8 +39,7 @@ bool CTxtFile::openfile_mapping(CString filename /*= CString("")*/)
 	// 把文件数据映射到进程的地址空间
 	void* pvFile = MapViewOfFile(hMapFile, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
 	char* ptr = (char*)pvFile;
-
-
+	
 	unsigned int line_num = 0;
 	for (DWORD i = 0; i <= size_low; ++i)
 	{
@@ -53,7 +50,7 @@ bool CTxtFile::openfile_mapping(CString filename /*= CString("")*/)
 		ptr++;
 	}
 	line_num++;
-	m_xyz.resize(line_num);
+	txtf->m_xyz.resize(line_num);
 
 	ptr = (char*)pvFile;
 	int columns = calc_columns(ptr);
@@ -63,8 +60,13 @@ bool CTxtFile::openfile_mapping(CString filename /*= CString("")*/)
 		return false;
 	}
 
+	int nstep = floor(line_num / 100.0);
+	// 进度条窗口
+	CProgressStatusDlg *dlg = new CProgressStatusDlg();
+	dlg->Create(IDD_PROGRESS_DLG, AfxGetMainWnd());
+	dlg->ShowWindow(SW_SHOW);
+
 	ptr = (char*)pvFile;
-	//std::string strss(ptr);
 	
 	char * str = strdup(ptr);
 	char seps[] = " ,\t\r\n";
@@ -72,6 +74,7 @@ bool CTxtFile::openfile_mapping(CString filename /*= CString("")*/)
 	token = strtok(str, seps);
 	int ii = 0;
 	unsigned int line_i = 0;
+	
 	if (columns == 3)
 	{
 		while (token != NULL)
@@ -79,16 +82,20 @@ bool CTxtFile::openfile_mapping(CString filename /*= CString("")*/)
 			switch (ii)
 			{
 			case 0:
-				m_xyz[line_i].x = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
+				txtf->m_xyz[line_i].x = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
 				ii = 1;
 				break;
 			case 1:
-				m_xyz[line_i].y = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
+				txtf->m_xyz[line_i].y = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
 				ii = 2;
 				break;
 			case 2:
-				m_xyz[line_i].z = (float)atof(token);// _cprintf(" %lf\n", (double)atof(token));
+				txtf->m_xyz[line_i].z = (float)atof(token);// _cprintf(" %lf\n", (double)atof(token));
 				line_i++;
+				if (line_i % nstep == 0)
+				{
+					dlg->StepIt();
+				}
 				ii = 0;
 				break;
 			}
@@ -104,28 +111,32 @@ bool CTxtFile::openfile_mapping(CString filename /*= CString("")*/)
 			switch (ii)
 			{
 			case 0:
-				m_xyz[line_i].x = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
+				txtf->m_xyz[line_i].x = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
 				ii = 1;
 				break;
 			case 1:
-				m_xyz[line_i].y = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
+				txtf->m_xyz[line_i].y = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
 				ii = 2;
 				break;
 			case 2:
-				m_xyz[line_i].y = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
+				txtf->m_xyz[line_i].y = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
 				ii = 3;
 				break;
 			case 3:
-				m_rgb[line_i].x = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
+				txtf->m_rgb[line_i].x = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
 				ii = 4;
 				break;
 			case 4:
-				m_rgb[line_i].y = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
+				txtf->m_rgb[line_i].y = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
 				ii = 5;
 				break;
 			case 5:
-				m_rgb[line_i].z = (float)atof(token);// _cprintf(" %lf\n", (double)atof(token));
+				txtf->m_rgb[line_i].z = (float)atof(token);// _cprintf(" %lf\n", (double)atof(token));
 				line_i++;
+				if (line_i % nstep == 0)
+				{
+					dlg->StepIt();
+				}
 				ii = 0;
 				break;
 			}
@@ -141,6 +152,10 @@ bool CTxtFile::openfile_mapping(CString filename /*= CString("")*/)
 	UnmapViewOfFile(pvFile);
 	CloseHandle(hFile);
 
+	txtf->m_offset = txtf->center(txtf->m_xyz);
+	normalize(txtf->m_xyz, txtf->m_offset);
+
+	txtf->SenCompletedMessage();
 	return true;
 }
 

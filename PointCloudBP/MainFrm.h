@@ -35,6 +35,7 @@ protected:  // 控件条嵌入成员
 // 生成的消息映射函数
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg LRESULT LoadFileComplete_MsgHandler(WPARAM, LPARAM);
 	DECLARE_MESSAGE_MAP()
 
 };
