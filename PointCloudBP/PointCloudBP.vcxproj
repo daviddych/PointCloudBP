@@ -121,13 +121,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\OpenSource\boost_1_62_0;$(SolutionDir)inc;D:\OpenSource\gl\glm-0.9.6.3;$(SolutionDir)ingredients;D:\OpenSource\gl\glew-2.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\OpenSource\boost_1_62_0;$(SolutionDir)include\inc;$(SolutionDir)include\glm-0.9.6.3;$(SolutionDir)ingredients;$(SolutionDir)include\glew-2.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\OpenSource\boost_1_62_0\lib64-msvc-14.0;$(SolutionDir)ingredients;D:\OpenSource\gl\glew-2.0.0\lib\Release\x64;D:\OpenSource\gl\freeglut3.0.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\OpenSource\boost_1_62_0\lib64-msvc-14.0;$(SolutionDir)ingredients;$(SolutionDir)lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glu32.lib;freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -180,7 +180,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\OpenSource\boost_1_62_0;$(SolutionDir)inc;D:\OpenSource\gl\glm-0.9.6.3;$(SolutionDir)ingredients;D:\OpenSource\gl\glew-2.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\OpenSource\boost_1_62_0;$(SolutionDir)include\inc;$(SolutionDir)include\glm-0.9.6.3;$(SolutionDir)ingredients;$(SolutionDir)include\glew-2.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
@@ -189,7 +189,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\OpenSource\boost_1_62_0\lib64-msvc-14.0;$(SolutionDir)ingredients;D:\OpenSource\gl\glew-2.0.0\lib\Release\x64;D:\OpenSource\gl\freeglut3.0.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\OpenSource\boost_1_62_0\lib64-msvc-14.0;$(SolutionDir)ingredients;$(SolutionDir)lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glu32.lib;freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
