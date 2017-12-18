@@ -35,4 +35,3 @@ protected:
 		pWnd->SendMessage(WM_LOADFILE_COMPLETE_MSG, NULL, 0);
 	}
 };
-

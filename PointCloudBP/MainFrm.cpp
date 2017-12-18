@@ -21,6 +21,7 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 	ON_MESSAGE(WM_LOADFILE_COMPLETE_MSG, LoadFileComplete_MsgHandler)
+	ON_COMMAND(ID_FILE_CLEAR, &CMainFrame::OnFileClear)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -106,4 +107,22 @@ LRESULT CMainFrame::LoadFileComplete_MsgHandler(WPARAM wparam, LPARAM lparam)
 	pView->m_scene.add_obj(pointCloud, offset);
 	pView->Invalidate(TRUE);
 	return 0;
+}
+
+// 如果场景中已经加载了数据就清除
+void CMainFrame::OnFileClear()
+{
+	CPointCloudBPView* pView = (CPointCloudBPView*)GetActiveView();
+	CPointCloudBPDoc*  pDoc = pView->GetDocument();
+	FileObj* fileobj = pDoc->m_fileobj;
+	if (fileobj == nullptr)
+		return;
+
+	// 允许多次导入数据进行叠加显示。
+	glm::vec3 offset;
+	if (!pView->m_scene.empty())
+	{
+		pView->m_scene.clear();
+	}
+	pView->Invalidate(TRUE);
 }

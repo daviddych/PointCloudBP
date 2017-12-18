@@ -316,3 +316,18 @@ bool ScenePointCloud::pickpoint(int winx, int winy, glm::vec3& picked, int activ
 	_cprintf("Picked Point: <%f, %f, %f>\n", picked.x, picked.y, picked.z);
 	return true;
 }
+
+bool ScenePointCloud::clear()
+{
+	if (m_graphicObjs.empty())
+		return true;
+
+	for (size_t i=0; i<m_graphicObjs.size(); ++i)
+	{
+		delete m_graphicObjs[i];
+	}
+	m_graphicObjs.clear();
+
+	delete m_box;
+	m_box = nullptr;
+}

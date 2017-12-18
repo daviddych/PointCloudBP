@@ -64,4 +64,5 @@ public:
 	void add_obj(GraphicalObject *obj, glm::vec3 offset=glm::vec3()); // 向场景中添加一个对象
 	bool pickpoint(int winx, int winy, glm::vec3& picked,int active_pcl=0); // 从当前活动的点云数据中拾取点数据
 	bool empty() { return m_graphicObjs.empty(); }
+	bool clear(); // 清除已经加载的数据
 };

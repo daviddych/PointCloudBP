@@ -24,6 +24,9 @@
     <Filter Include="glScene">
       <UniqueIdentifier>{61b81fbc-9258-43cd-a730-76a06701a981}</UniqueIdentifier>
     </Filter>
+    <Filter Include="filter">
+      <UniqueIdentifier>{4c7af1a4-d51c-48fd-8421-c925f537e00b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

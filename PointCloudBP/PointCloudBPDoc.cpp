@@ -167,8 +167,6 @@ void CPointCloudBPDoc::OnFileOpen()
 	char* msg = (LPTSTR)(LPCTSTR)FilePathName;
 	msg = FilePathName.GetBuffer(0);
 	FilePathName.ReleaseBuffer();
-	GPointCloud *pointCloud;
-	glm::vec3 offset;
 
 	if (ext == "txt")
 	{
@@ -181,19 +179,5 @@ void CPointCloudBPDoc::OnFileOpen()
 	// waiting to add more file format support.
 
 	m_fileobj->openfile(m_filename);
-
-	//POSITION pos = GetFirstViewPosition();
-	//CPointCloudBPView* pView = (CPointCloudBPView*)GetNextView(pos);
-	////boost::thread t2{ thread_open_pointcloud, pView, m_filename };
-	//if (!pView->m_scene.empty())
-	//{
-	//	offset = pView->m_scene.get_scene_offset();
-	//	fileobj->update_offset(offset);
-	//}
-	//pointCloud = new GPointCloud(fileobj->get_xyz(), fileobj->get_rgb());
-	//offset = fileobj->get_offset();
-	//delete fileobj;
-	//pView->m_scene.add_obj(pointCloud, offset);
-	//pView->Invalidate(TRUE);
 }
 

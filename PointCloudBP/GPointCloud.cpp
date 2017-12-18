@@ -39,13 +39,6 @@ GPointCloud::GPointCloud(unsigned int N, float* xyz, float* rgb) : GraphicalObje
 
 	m_xyz.resize(N);
 	memcpy(&m_xyz[0].x, xyz, sizeof(float)*N * 3);
-// 	float* ptr = xyz;
-// 	for (unsigned int i = 0; i < N; ++i)
-// 	{
-// 		m_xyz[i].x = *ptr++;
-// 		m_xyz[i].y = *ptr++;
-// 		m_xyz[i].z = *ptr++;
-// 	}
 	Box(m_xyz);
 
 	if (rgb != nullptr)
@@ -103,18 +96,11 @@ void GPointCloud::Box(std::vector<glm::vec3>& xyz)
 	float x_max = -x_min;
 
 	float y_min(x_min), z_min(x_min), y_max(x_max), z_max(x_max);
-	//vec3 pt;
-	//for (size_t i = 0; i < xyz.size(); ++i)
-	//{
-	//	pt = xyz[i];
-	//	x_min = x_min < pt.x ? x_min : pt.x;
-	//	x_max = x_max > pt.x ? x_max : pt.x;
-	//	y_min = y_min < pt.y ? y_min : pt.y;
-	//	y_max = y_max > pt.y ? y_max : pt.y;
-	//	z_min = z_min < pt.z ? z_min : pt.z;
-	//	z_max = z_max > pt.z ? z_max : pt.z;
-	//}
-	for (std::vector<glm::vec3>::const_iterator iter = xyz.begin(); iter != xyz.end(); ++iter)
+// 	std::sort(m_xyz.begin(), m_xyz.end(), [](vec3 d1, vec3 d2) { return d1.x > d2.x; });
+// 	x_max = m_xyz[0].x;
+// 	x_min = m_xyz[m_xyz.size() - 1].x;
+
+	for (auto iter = xyz.begin(); iter != xyz.end(); ++iter)
 	{
 		x_min = x_min < iter->x ? x_min : iter->x;
 		x_max = x_max > iter->x ? x_max : iter->x;
