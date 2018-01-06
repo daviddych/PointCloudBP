@@ -10,6 +10,7 @@ public:
 	LasFile();
 	~LasFile();
 
+	// Load data from a *.las file.
 	bool openfile(const char* filename);
 
 private:

@@ -20,9 +20,9 @@ bool CTxtFile::openfile(const char* filename)
 	return true;
 }
 
-bool CTxtFile::openfile_mapping(CTxtFile* txtf, CString filename)
+bool CTxtFile::openfile_mapping(CTxtFile* txtf, const std::string& filename)
 {
-	HANDLE hFile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	HANDLE hFile = CreateFile(filename.c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	
 	DWORD size_low, size_high;
 	size_low = GetFileSize(hFile, &size_high);
@@ -187,7 +187,7 @@ int CTxtFile::calc_columns(const char * Str, int readed, char* seps)
 	return columns;
 }
 
-bool CTxtFile::openfile_ifstream(CString filename /*= CString("")*/)
+bool CTxtFile::openfile_ifstream(const std::string& filename)
 {
 	std::ifstream infile;
 	infile.open(filename);
@@ -221,21 +221,6 @@ CTxtFile::~CTxtFile()
 {
 }
 
-bool cmpx(const glm::vec3 &a, const glm::vec3 &b)
-{
-	return a.x < b.x;
-}
-
-bool cmpy(const glm::vec3 &a, const glm::vec3 &b)
-{
-	return a.y < b.y;
-}
-
-bool cmpz(const glm::vec3 &a, const glm::vec3 &b)
-{
-	return a.z < b.z;
-}
-
 void CTxtFile::normalize(std::vector<glm::vec3>& xyz, glm::vec3 offset)
 {
 	for (std::vector<glm::vec3>::iterator iter= xyz.begin(); iter != xyz.end(); ++iter)
@@ -246,13 +231,13 @@ void CTxtFile::normalize(std::vector<glm::vec3>& xyz, glm::vec3 offset)
 
 glm::vec3 CTxtFile::center(std::vector<glm::vec3>& xyz)
 {
-	auto result = std::minmax_element(xyz.begin(), xyz.end(), cmpx);
+	auto result = std::minmax_element(xyz.begin(), xyz.end(), [](const glm::vec3 &a, const glm::vec3 &b) { return a.x < b.x; });
 	float min_x((*result.first).x), max_x((*result.second).x);
 
-	result = std::minmax_element(xyz.begin(), xyz.end(), cmpy);
+	result = std::minmax_element(xyz.begin(), xyz.end(), [](const glm::vec3 &a, const glm::vec3 &b) { return a.y < b.y; });
 	float min_y((*result.first).y), max_y((*result.second).y);
 
-	result = std::minmax_element(xyz.begin(), xyz.end(), cmpz);
+	result = std::minmax_element(xyz.begin(), xyz.end(), [](const glm::vec3 &a, const glm::vec3 &b) { return a.z < b.z; });
 	float min_z((*result.first).z), max_z((*result.second).z);
 
 	return glm::vec3(max_x + min_x, max_y + min_y, max_z + min_z) / 2.0f;

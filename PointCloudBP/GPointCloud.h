@@ -41,7 +41,7 @@ public:
 
 private:
 	void Box() { Box(m_xyz); }
-	void Box(std::vector<glm::vec3>& xyz);
+	void Box(std::vector<glm::vec3> xyz);
 	void createVAO(std::vector<glm::vec3>& xyz, std::vector<glm::vec3>& rgb);
 
 private:

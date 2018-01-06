@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "LasFile.h"
 //#include <liblas/liblas.hpp>
-#include <fstream>  // std::ifstream
-#include <iostream> // std::cout
+#include <fstream>  
+#include <iostream> 
 #include "Resource.h"
 
 
@@ -25,7 +25,7 @@ bool LasFile::read(LasFile* lasf, std::string filename)
 {
 	assert(filename.c_str() != NULL);
 
-	// 进度条窗口
+	// Progress Window
 	CProgressStatusDlg *dlg = new CProgressStatusDlg();
 	dlg->Create(IDD_PROGRESS_DLG, AfxGetMainWnd());
 	dlg->ShowWindow(SW_SHOW);

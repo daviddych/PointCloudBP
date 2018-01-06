@@ -13,3 +13,5 @@
 /bin/x64/PointCloudBP.exe
 /bin/x64/PointCloudBPd.exe
 /*.bak
+/ipch
+/PointCloudBP.VC.VC.opendb
