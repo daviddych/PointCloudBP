@@ -1,5 +1,5 @@
 
-// MainFrm.h : CMainFrame ÀàµÄ½Ó¿Ú
+// MainFrm.h : CMainFrame ç±»çš„æ¥å£
 //
 
 #pragma once
@@ -7,21 +7,21 @@
 class CMainFrame : public CFrameWnd
 {
 	
-protected: // ½ö´ÓĞòÁĞ»¯´´½¨
+protected: // ä»…ä»åºåˆ—åŒ–åˆ›å»º
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 
-// ÌØĞÔ
+// ç‰¹æ€§
 public:
 
-// ²Ù×÷
+// æ“ä½œ
 public:
 
-// ÖØĞ´
+// é‡å†™
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
-// ÊµÏÖ
+// å®ç°
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG
@@ -29,10 +29,10 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:  // ¿Ø¼şÌõÇ¶Èë³ÉÔ±
+public:  // æ§ä»¶æ¡åµŒå…¥æˆå‘˜
 	CStatusBar        m_wndStatusBar;
 
-// Éú³ÉµÄÏûÏ¢Ó³Éäº¯Êı
+// ç”Ÿæˆçš„æ¶ˆæ¯æ˜ å°„å‡½æ•°
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg LRESULT LoadFileComplete_MsgHandler(WPARAM, LPARAM);

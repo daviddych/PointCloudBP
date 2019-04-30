@@ -1,10 +1,10 @@
 
-// PointCloudBPView.cpp : CPointCloudBPView ÀàµÄÊµÏÖ
+// PointCloudBPView.cpp : CPointCloudBPView ç±»çš„å®ç°
 //
 
 #include "stdafx.h"
-// SHARED_HANDLERS ¿ÉÒÔÔÚÊµÏÖÔ¤ÀÀ¡¢ËõÂÔÍ¼ºÍËÑË÷É¸Ñ¡Æ÷¾ä±úµÄ
-// ATL ÏîÄ¿ÖĞ½øĞĞ¶¨Òå£¬²¢ÔÊĞíÓë¸ÃÏîÄ¿¹²ÏíÎÄµµ´úÂë¡£
+// SHARED_HANDLERS å¯ä»¥åœ¨å®ç°é¢„è§ˆã€ç¼©ç•¥å›¾å’Œæœç´¢ç­›é€‰å™¨å¥æŸ„çš„
+// ATL é¡¹ç›®ä¸­è¿›è¡Œå®šä¹‰ï¼Œå¹¶å…è®¸ä¸è¯¥é¡¹ç›®å…±äº«æ–‡æ¡£ä»£ç ã€‚
 #ifndef SHARED_HANDLERS
 #include "PointCloudBP.h"
 #endif
@@ -17,6 +17,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 #include <algorithm>
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -28,7 +29,7 @@
 IMPLEMENT_DYNCREATE(CPointCloudBPView, CView)
 
 BEGIN_MESSAGE_MAP(CPointCloudBPView, CView)
-	// ±ê×¼´òÓ¡ÃüÁî
+	// æ ‡å‡†æ‰“å°å‘½ä»¤
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
@@ -55,7 +56,7 @@ END_MESSAGE_MAP()
 //	{"SwapBuffers failed"},           // 7
 //};
 
-// CPointCloudBPView ¹¹Ôì/Îö¹¹
+// CPointCloudBPView æ„é€ /ææ„
 CPointCloudBPView::CPointCloudBPView() : m_select_model(false), m_gpoint_ptr(nullptr)
 {
 }
@@ -75,7 +76,7 @@ BOOL CPointCloudBPView::PreCreateWindow(CREATESTRUCT& cs)
 	return CView::PreCreateWindow(cs);
 }
 
-// CPointCloudBPView »æÖÆ
+// CPointCloudBPView ç»˜åˆ¶
 void CPointCloudBPView::OnDraw(CDC* pDC)
 {
 	CPointCloudBPDoc* pDoc = GetDocument();
@@ -95,25 +96,25 @@ void CPointCloudBPView::OnDraw(CDC* pDC)
 	m_scene.SwapBuffers();
 }
 
-// CPointCloudBPView ´òÓ¡
+// CPointCloudBPView æ‰“å°
 BOOL CPointCloudBPView::OnPreparePrinting(CPrintInfo* pInfo)
 {
-	// Ä¬ÈÏ×¼±¸
+	// é»˜è®¤å‡†å¤‡
 	return DoPreparePrinting(pInfo);
 }
 
 void CPointCloudBPView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: Ìí¼Ó¶îÍâµÄ´òÓ¡Ç°½øĞĞµÄ³õÊ¼»¯¹ı³Ì
+	// TODO: æ·»åŠ é¢å¤–çš„æ‰“å°å‰è¿›è¡Œçš„åˆå§‹åŒ–è¿‡ç¨‹
 }
 
 void CPointCloudBPView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: Ìí¼Ó´òÓ¡ºó½øĞĞµÄÇåÀí¹ı³Ì
+	// TODO: æ·»åŠ æ‰“å°åè¿›è¡Œçš„æ¸…ç†è¿‡ç¨‹
 }
 
 
-// CPointCloudBPView Õï¶Ï
+// CPointCloudBPView è¯Šæ–­
 #ifdef _DEBUG
 void CPointCloudBPView::AssertValid() const
 {
@@ -125,7 +126,7 @@ void CPointCloudBPView::Dump(CDumpContext& dc) const
 	CView::Dump(dc);
 }
 
-CPointCloudBPDoc* CPointCloudBPView::GetDocument() const // ·Çµ÷ÊÔ°æ±¾ÊÇÄÚÁªµÄ
+CPointCloudBPDoc* CPointCloudBPView::GetDocument() const // éè°ƒè¯•ç‰ˆæœ¬æ˜¯å†…è”çš„
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CPointCloudBPDoc)));
 	return (CPointCloudBPDoc*)m_pDocument;
@@ -133,7 +134,7 @@ CPointCloudBPDoc* CPointCloudBPView::GetDocument() const // ·Çµ÷ÊÔ°æ±¾ÊÇÄÚÁªµÄ
 #endif //_DEBUG
 
 
-// CPointCloudBPView ÏûÏ¢´¦Àí³ÌĞò
+// CPointCloudBPView æ¶ˆæ¯å¤„ç†ç¨‹åº
 int CPointCloudBPView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
@@ -228,7 +229,7 @@ void CPointCloudBPView::OnMouseMove(UINT nFlags, CPoint point)
 void CPointCloudBPView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	m_mousePt = point;
-	// Í¬Ê±°´ÏÂ¡°ctrl + Êó±ê×ó¼ü¡±£¬Ê°È¡µã×ø±êĞÅÏ¢¡£ 
+	// åŒæ—¶æŒ‰ä¸‹â€œctrl + é¼ æ ‡å·¦é”®â€ï¼Œæ‹¾å–ç‚¹åæ ‡ä¿¡æ¯ã€‚ 
 	if ((nFlags & MK_CONTROL) && !m_scene.empty())
 	{
 		if (m_scene.pickpoint(point.x, point.y, m_picked_pt))
@@ -242,6 +243,13 @@ void CPointCloudBPView::OnLButtonDown(UINT nFlags, CPoint point)
 			{
 				m_gpoint_ptr->Update(m_picked_pt);
 			}
+
+			// ä¿®æ”¹åŸæœ‰çš„çŠ¶æ€æ ä¸Šå°±ç»ªä¸€æ çš„ä¿¡æ¯
+			CMainFrame *pFrame = (CMainFrame*)AfxGetMainWnd();
+			CString str;
+			str.Format("<%f, %f, %f>", m_picked_pt.x, m_picked_pt.y, m_picked_pt.z);
+			pFrame->m_wndStatusBar.SetPaneText(0, str);
+
 			Invalidate(TRUE);
 		}
 	}
@@ -250,10 +258,13 @@ void CPointCloudBPView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CPointCloudBPView::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	// Í¬Ê±°´ÏÂ¡°ctrl + Êó±êÓÒ¼ü¡±£¬ÏÔÊ¾/Òş²ØÊ°È¡µÄµã 
+	// åŒæ—¶æŒ‰ä¸‹â€œctrl + é¼ æ ‡å³é”®â€ï¼Œæ˜¾ç¤º/éšè—æ‹¾å–çš„ç‚¹ 
 	if ((GetKeyState(VK_CONTROL) & 0x8000) && !m_scene.empty())
 	{
 		m_select_model = !m_select_model;
+		// ä¿®æ”¹åŸæœ‰çš„çŠ¶æ€æ ä¸Šå°±ç»ªä¸€æ çš„ä¿¡æ¯
+		CMainFrame *pFrame = (CMainFrame*)AfxGetMainWnd();
+		pFrame->m_wndStatusBar.SetPaneText(0, "");
 	}
 	CView::OnRButtonDown(nFlags, point);
 }

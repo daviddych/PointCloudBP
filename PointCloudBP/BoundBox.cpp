@@ -142,6 +142,6 @@ void BoundBox::render()
 
 	glBindVertexArray(_vaoHandle);
 	glLineWidth(1);
-	glDrawElements(GL_LINES, sizeof(BoundBox::s_indices)/sizeof(BoundBox::s_indices[0]), GL_UNSIGNED_BYTE, BoundBox::s_indices);
+	glDrawElements(GL_LINES, 24, GL_UNSIGNED_BYTE, s_indices);
 	glBindVertexArray(0);
 }

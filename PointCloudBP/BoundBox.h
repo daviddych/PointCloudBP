@@ -26,7 +26,7 @@ public:
 	vec3 _rightup;
 	vec3 _center;
 	float _x_length, _y_length, _z_length;
-
+	 
 private:
 	void init_graphic();
 
