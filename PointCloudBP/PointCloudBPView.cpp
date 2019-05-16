@@ -246,8 +246,14 @@ void CPointCloudBPView::OnLButtonDown(UINT nFlags, CPoint point)
 
 			// 修改原有的状态栏上就绪一栏的信息
 			CMainFrame *pFrame = (CMainFrame*)AfxGetMainWnd();
+			CPointCloudBPDoc* pDoc = GetDocument();
+			ASSERT_VALID(pDoc);
+			if (!pDoc)
+				return;
+
+			glm::vec3 selpt = pDoc->m_fileobj->m_offset + m_picked_pt;
 			CString str;
-			str.Format("<%f, %f, %f>", m_picked_pt.x, m_picked_pt.y, m_picked_pt.z);
+			str.Format("<%f, %f, %f>", selpt.x, selpt.y, selpt.z);
 			pFrame->m_wndStatusBar.SetPaneText(0, str);
 
 			Invalidate(TRUE);

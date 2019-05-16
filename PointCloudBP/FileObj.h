@@ -29,7 +29,7 @@ protected:
 		CWnd* pWnd = CWnd::FindWindow(NULL, _T("PointCloudBP"));
 		if (pWnd == NULL)
 		{
-			AfxMessageBox("接收程序没有运行!");
+			AfxMessageBox("鎺ユ敹绋嬪簭娌℃湁杩愯!");
 			return;
 		}
 		pWnd->SendMessage(WM_LOADFILE_COMPLETE_MSG, NULL, 0);
