@@ -7,33 +7,35 @@
 
 class BoundBox
 {
-	typedef  glm::vec3  vec3;
+	using  vec3 = glm::vec3;
 
 public:
-	BoundBox(vec3 lb=vec3(), vec3 ru=vec3());
-	BoundBox(BoundBox* box);
+	BoundBox(const vec3& lb=vec3(), const vec3& ru=vec3());
+	BoundBox(const BoundBox* box);
+
+	
+
 	~BoundBox();
 
 	void release();
 
-	// ��Χ���󲢼�
-	BoundBox operator+(BoundBox b);
-	BoundBox* Union(vec3 lb = vec3(), vec3 ru = vec3());
+	// 包围盒求并集
+	BoundBox operator+(const BoundBox& b);
+	BoundBox* plus(const vec3& lb = vec3(), const vec3& ru = vec3());
 	
 	void render();
+	void update(const BoundBox* box);
 
-	vec3 _leftbottom;
-	vec3 _rightup;
-	vec3 _center;
-	float _x_length, _y_length, _z_length;
+	vec3 _leftbottom{ 0.0f, 0.0f, 0.0f };
+	vec3 _rightup{ 0.0f, 0.0f, 0.0f };
+	vec3 _center{0.0f, 0.0f, 0.0f};
+	float _x_length{ 0.0f }, _y_length{ 0.0f }, _z_length{ 0.0f };
 	 
 private:
 	void init_graphic();
+	void assign_coords(const BoundBox* box); // 坐标赋值
 
 	unsigned int _vbo[2];
 	unsigned int _vaoHandle;
 	static GLubyte s_indices[24];
 };
-
-
-

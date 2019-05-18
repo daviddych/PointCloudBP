@@ -212,6 +212,7 @@
     <None Include="..\glsl\subroutine.frag" />
     <None Include="..\glsl\subroutine.vert" />
     <None Include="..\glsl\vshader.vert" />
+    <None Include="..\README.md" />
     <None Include="ReadMe.txt" />
     <None Include="res\PointCloudBP.ico" />
     <None Include="res\PointCloudBP.rc2" />

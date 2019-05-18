@@ -1,10 +1,10 @@
 
-// PointCloudBPDoc.cpp : CPointCloudBPDoc ÀàµÄÊµÏÖ
+// PointCloudBPDoc.cpp : CPointCloudBPDoc ç±»çš„å®ç°
 //
 
 #include "stdafx.h"
-// SHARED_HANDLERS ¿ÉÒÔÔÚÊµÏÖÔ¤ÀÀ¡¢ËõÂÔÍ¼ºÍËÑË÷É¸Ñ¡Æ÷¾ä±úµÄ
-// ATL ÏîÄ¿ÖĞ½øĞĞ¶¨Òå£¬²¢ÔÊĞíÓë¸ÃÏîÄ¿¹²ÏíÎÄµµ´úÂë¡£
+// SHARED_HANDLERS å¯ä»¥åœ¨å®ç°é¢„è§ˆã€ç¼©ç•¥å›¾å’Œæœç´¢ç­›é€‰å™¨å¥æŸ„çš„
+// ATL é¡¹ç›®ä¸­è¿›è¡Œå®šä¹‰ï¼Œå¹¶å…è®¸ä¸è¯¥é¡¹ç›®å…±äº«æ–‡æ¡£ä»£ç ã€‚
 #ifndef SHARED_HANDLERS
 #include "PointCloudBP.h"
 #endif
@@ -17,6 +17,7 @@
 #include "LasFile.h"
 //#include <boost/thread.hpp>
 #include "threadfunction.h"
+#include <corecrt_io.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -32,7 +33,7 @@ BEGIN_MESSAGE_MAP(CPointCloudBPDoc, CDocument)
 END_MESSAGE_MAP()
 
 
-// CPointCloudBPDoc ¹¹Ôì/Îö¹¹
+// CPointCloudBPDoc æ„é€ /ææ„
 
 CPointCloudBPDoc::CPointCloudBPDoc()
 {
@@ -41,6 +42,10 @@ CPointCloudBPDoc::CPointCloudBPDoc()
 
 CPointCloudBPDoc::~CPointCloudBPDoc()
 {
+	if (m_fileobj != nullptr) {
+		delete m_fileobj;
+		m_fileobj = nullptr;
+	}
 }
 
 BOOL CPointCloudBPDoc::OnNewDocument()
@@ -48,33 +53,33 @@ BOOL CPointCloudBPDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	// TODO: ÔÚ´ËÌí¼ÓÖØĞÂ³õÊ¼»¯´úÂë
-	// (SDI ÎÄµµ½«ÖØÓÃ¸ÃÎÄµµ)
+	// TODO: åœ¨æ­¤æ·»åŠ é‡æ–°åˆå§‹åŒ–ä»£ç 
+	// (SDI æ–‡æ¡£å°†é‡ç”¨è¯¥æ–‡æ¡£)
 
 	return TRUE;
 }
 
 
-// CPointCloudBPDoc ĞòÁĞ»¯
+// CPointCloudBPDoc åºåˆ—åŒ–
 
 void CPointCloudBPDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
-		// TODO: ÔÚ´ËÌí¼Ó´æ´¢´úÂë
+		// TODO: åœ¨æ­¤æ·»åŠ å­˜å‚¨ä»£ç 
 	}
 	else
 	{
-		// TODO: ÔÚ´ËÌí¼Ó¼ÓÔØ´úÂë
+		// TODO: åœ¨æ­¤æ·»åŠ åŠ è½½ä»£ç 
 	}
 }
 
 #ifdef SHARED_HANDLERS
 
-// ËõÂÔÍ¼µÄÖ§³Ö
+// ç¼©ç•¥å›¾çš„æ”¯æŒ
 void CPointCloudBPDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 {
-	// ĞŞ¸Ä´Ë´úÂëÒÔ»æÖÆÎÄµµÊı¾İ
+	// ä¿®æ”¹æ­¤ä»£ç ä»¥ç»˜åˆ¶æ–‡æ¡£æ•°æ®
 	dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
 
 	CString strText = _T("TODO: implement thumbnail drawing here");
@@ -92,14 +97,14 @@ void CPointCloudBPDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 	dc.SelectObject(pOldFont);
 }
 
-// ËÑË÷´¦Àí³ÌĞòµÄÖ§³Ö
+// æœç´¢å¤„ç†ç¨‹åºçš„æ”¯æŒ
 void CPointCloudBPDoc::InitializeSearchContent()
 {
 	CString strSearchContent;
-	// ´ÓÎÄµµÊı¾İÉèÖÃËÑË÷ÄÚÈİ¡£
-	// ÄÚÈİ²¿·ÖÓ¦ÓÉ¡°;¡±·Ö¸ô
+	// ä»æ–‡æ¡£æ•°æ®è®¾ç½®æœç´¢å†…å®¹ã€‚
+	// å†…å®¹éƒ¨åˆ†åº”ç”±â€œ;â€åˆ†éš”
 
-	// ÀıÈç:  strSearchContent = _T("point;rectangle;circle;ole object;")£»
+	// ä¾‹å¦‚:  strSearchContent = _T("point;rectangle;circle;ole object;")ï¼›
 	SetSearchContent(strSearchContent);
 }
 
@@ -123,7 +128,7 @@ void CPointCloudBPDoc::SetSearchContent(const CString& value)
 
 #endif // SHARED_HANDLERS
 
-// CPointCloudBPDoc Õï¶Ï
+// CPointCloudBPDoc è¯Šæ–­
 
 #ifdef _DEBUG
 void CPointCloudBPDoc::AssertValid() const
@@ -138,46 +143,75 @@ void CPointCloudBPDoc::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 
-// CPointCloudBPDoc ÃüÁî
+// CPointCloudBPDoc å‘½ä»¤
 
 
 void CPointCloudBPDoc::OnFileOpen()
 {
-	CFileDialog fileDialog(TRUE, ".las", NULL,
-		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-		_T("LAS_MODEL(*.las)|*.las|\
-			TXT_MODEL(*.txt)|*.txt|\
-			Surfit_Dat(*.dat)|*.dat|\
-			xyzi_MODEL(*.xyzi)|*.xyzi|\
-			point_line(*.pl)|*.pl|\
-			CSV_MODEL(*.csv)|*.csv|\
-			ËùÓĞÎÄ¼ş(*.*)|*.*||"));
-	// ±êÌâ
-	fileDialog.m_ofn.lpstrTitle = "´ò¿ªµãÔÆÊı¾İ";
-	// Ö¸¶¨Ä¬ÈÏ¶¨Î»ÎÄ¼ş¼Ğ
-	fileDialog.m_ofn.lpstrInitialDir = "d:\\"; 
+	CFileDialog fileDialog(TRUE, ".las", NULL,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		_T("LAS_MODEL(*.las)|*.las|TXT_MODEL(*.txt)|*.txt|Surfit_Dat(*.dat)|*.dat|\
+			xyzi_MODEL(*.xyzi)|*.xyzi|point_line(*.pl)|*.pl|CSV_MODEL(*.csv)|*.csv|æ‰€æœ‰æ–‡ä»¶(*.*)|*.*||"));
+	// æ ‡é¢˜
+	fileDialog.m_ofn.lpstrTitle = "æ‰“å¼€ç‚¹äº‘æ•°æ®";
 
-	if (fileDialog.DoModal() != IDOK) 	return;
-
-	CString FilePathName = fileDialog.GetPathName();
-	m_filename = FilePathName;
+	// å®šä½åˆ°dataæ–‡ä»¶å¤¹ï¼Œå¦‚æœä¸å­˜åœ¨dataæ–‡ä»¶å¤¹ï¼Œå°±å®šä½åˆ°cç›˜
+	CString data_path = get_data_path();
+	if ((_access(data_path.GetBuffer(data_path.GetLength()), 0)) != -1)
+	{	// æŒ‡å®šé»˜è®¤å®šä½æ–‡ä»¶å¤¹
+		fileDialog.m_ofn.lpstrInitialDir = data_path;
+	}
+	else
+	{
+		fileDialog.m_ofn.lpstrInitialDir = "c:\\";
+	}
 	
-	CString ext(FilePathName.Right(3));
-	ext.MakeLower();
-	char* msg = (LPTSTR)(LPCTSTR)FilePathName;
-	msg = FilePathName.GetBuffer(0);
-	FilePathName.ReleaseBuffer();
+	if (fileDialog.DoModal() != IDOK) 	
+		return;
 
+	m_filename = fileDialog.GetPathName();	
+	CString ext(m_filename.Right(3));
+	ext.MakeLower();
+
+	FileObj *fileobj;
 	if (ext == "txt")
 	{
-		m_fileobj = new CTxtFile;
+		fileobj = new CTxtFile;
 	}
 	else if (ext == "las")
 	{
-		m_fileobj = new LasFile;
+		fileobj = new LasFile;
+	}
+	else
+	{
+		MessageBeep(0xFFFFFFFF);
+		MessageBox(NULL, "Unknown Type, only las and txt are supported", "Opps!", MB_OK);
+		return;
 	}
 	// waiting to add more file format support.
 
-	m_fileobj->openfile(m_filename);
+	fileobj->openfile(m_filename);
+	if (m_fileobj != nullptr)
+		delete m_fileobj;
+	m_fileobj = fileobj;
 }
 
+CString CPointCloudBPDoc::get_data_path()
+{
+	TCHAR *pBuffer = new TCHAR[1024];
+	GetModuleFileName(NULL, pBuffer, 1024);
+	CString str(pBuffer);
+	str = str.Left(str.ReverseFind('\\'));
+	str = str.Left(str.ReverseFind('\\'));
+	str = str.Left(str.ReverseFind('\\'));
+	str = str + CString("\\data");
+	delete[] pBuffer;
+	return str;
+}
+
+
+void CPointCloudBPDoc::release_fileobj() {
+	if (m_fileobj != nullptr) {
+		delete m_fileobj;
+		m_fileobj = nullptr;
+	}
+}

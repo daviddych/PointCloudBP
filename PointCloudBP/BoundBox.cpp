@@ -6,7 +6,7 @@
 
 GLubyte BoundBox::s_indices[24] = { 0,1,1,2,2,3,3,0,5,6,6,7,7,4,4,5,6,1,7,2,4,3,5,0 };
 
-BoundBox::BoundBox(vec3 lb , vec3 ru)
+BoundBox::BoundBox(const vec3& lb , const vec3& ru)
 {
 	_vaoHandle = 0;
 	_leftbottom = lb;
@@ -22,7 +22,16 @@ BoundBox::BoundBox(vec3 lb , vec3 ru)
 	init_graphic();
 }
 
-BoundBox::BoundBox(BoundBox* box)
+BoundBox::BoundBox(const BoundBox* box)
+{
+	assign_coords(box);
+
+	_vaoHandle = 0;
+
+	init_graphic();
+}
+
+void BoundBox::assign_coords(const BoundBox* box)
 {
 	if (box == nullptr)
 		return;
@@ -36,10 +45,6 @@ BoundBox::BoundBox(BoundBox* box)
 	_x_length = pt.x;
 	_y_length = pt.y;
 	_z_length = pt.z;
-
-	_vaoHandle = 0;
-
-	init_graphic();
 }
 
 BoundBox::~BoundBox()
@@ -51,16 +56,23 @@ void BoundBox::release()
 {
 	glDeleteBuffers(2, _vbo);
 	glDeleteVertexArrays(1, &_vaoHandle);
+	_vaoHandle = 0;
+	_leftbottom = vec3(0.0f, 0.0f, 0.0f);
+	_rightup = vec3(0.0f, 0.0f, 0.0f);
+	_center = vec3(0.0f, 0.0f, 0.0f);
+	_x_length = 0.0f;
+	_y_length = 0.0f;
+	_z_length = 0.0f;
 }
 
-BoundBox BoundBox::operator+(BoundBox b)
+BoundBox BoundBox::operator+(const BoundBox& b)
 { 
 	vec3 lb(std::min(_leftbottom.x, b._leftbottom.x), std::min(_leftbottom.y, b._leftbottom.y), std::min(_leftbottom.z, b._leftbottom.z));
-	vec3 ru(std::min(_rightup.x, b._rightup.x), std::min(_rightup.y, b._rightup.y), std::min(_rightup.z, b._rightup.z));
-	return BoundBox(lb, ru); 
+	vec3 ru(std::max(_rightup.x, b._rightup.x), std::max(_rightup.y, b._rightup.y), std::max(_rightup.z, b._rightup.z));
+	return std::move(BoundBox(lb, ru)); 
 }
 
-BoundBox* BoundBox::Union(vec3 lb, vec3 ru)
+BoundBox* BoundBox::plus(const vec3& lb, const vec3& ru)
 {
 	_leftbottom = vec3(std::min(_leftbottom.x, lb.x), std::min(_leftbottom.y, lb.y), std::min(_leftbottom.z, lb.z));
 	_rightup = vec3(std::max(_rightup.x, ru.x), std::max(_rightup.y, ru.y), std::max(_rightup.z, ru.z));
@@ -72,11 +84,27 @@ BoundBox* BoundBox::Union(vec3 lb, vec3 ru)
 	_y_length = pt.y;
 	_z_length = pt.z;
 
-	release();
+	glDeleteBuffers(2, _vbo);
+	glDeleteVertexArrays(1, &_vaoHandle);
+	_vaoHandle = 0;
 	init_graphic();
 	return this;
 }
 
+void BoundBox::update(const BoundBox* box)
+{
+	assign_coords(box);
+
+	float x1(_leftbottom.x), y1(_leftbottom.y), z1(_leftbottom.z);
+	float x2(_rightup.x), y2(_rightup.y), z2(_rightup.z);
+
+	// vertex coords array
+	float vertices[] = { x2,y1,z2,  x1,y1,z2,   x1,y1,z1,    x2,y1,z1,    // v0-v1-v2-v3
+		x2,y2,z1,    x2,y2,z2,   x1,y2,z2,   x1,y2,z1 };  // v4-v5-v6-v7
+
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo[0]);
+	glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), vertices, GL_DYNAMIC_DRAW);
+}
 void BoundBox::init_graphic()
 {
 // cube ///////////////////////////////////////////////////////////////////////
@@ -112,7 +140,7 @@ float colors[] = {  1,1,1,  1,1,0,  1,0,0,  1,0,1,              // v0-v1-v2-v3
 
 glGenBuffers(2, _vbo);
 glBindBuffer(GL_ARRAY_BUFFER, _vbo[0]);
-glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), vertices, GL_STATIC_DRAW);
+glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), vertices, GL_DYNAMIC_DRAW);
 
 glBindBuffer(GL_ARRAY_BUFFER, _vbo[1]);
 glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), colors, GL_STATIC_DRAW);

@@ -69,7 +69,7 @@ void GPointCloud::createVAO(std::vector<glm::vec3>& xyz, std::vector<glm::vec3>&
 	glBufferData(GL_ARRAY_BUFFER, xyz.size() * 3 * sizeof(float), &xyz[0].x, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboHandles[1]);
-	glBufferData(GL_ARRAY_BUFFER, rgb.size() * 3 * sizeof(float), &rgb[0].r, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, rgb.size() * 3 * sizeof(float), &rgb[0].r, GL_DYNAMIC_DRAW);
 
 	// Allocate Vertex Array Object
 	glGenVertexArrays(1, &m_vaoHandle);
@@ -93,41 +93,40 @@ void GPointCloud::createVAO(std::vector<glm::vec3>& xyz, std::vector<glm::vec3>&
 // calculate the range box of the input points
 void GPointCloud::Box(std::vector<glm::vec3> xyz)
 {
-	glm::vec3 leftbottom,rightup;
+//	glm::vec3 leftbottom,rightup;
+//	float x_min, x_max, y_min, z_min, y_max, z_max;
+// 	[&xyz, &leftbottom, &rightup]() {
+// 		std::sort(xyz.begin(), xyz.end(), [](const vec3& d1, const vec3& d2) { return d1.x > d2.x; });
+// 		rightup.x = xyz[0].x;
+// 		leftbottom.x = xyz[xyz.size() - 1].x;
+// 	};
+// 
+// 	[&xyz, &leftbottom, &rightup]() {
+// 		std::sort(xyz.begin(), xyz.end(), [](const vec3& d1, const vec3& d2) { return d1.y > d2.y; });
+// 		rightup.y = xyz[0].y;
+// 		leftbottom.y = xyz[xyz.size() - 1].y;
+// 	};
+// 
+// 	[&xyz, &leftbottom, &rightup]() {
+// 		std::sort(xyz.begin(), xyz.end(), [](const vec3& d1, const vec3& d2) { return d1.z > d2.z; });
+// 		rightup.z = xyz[0].z;
+// 		leftbottom.z = xyz[xyz.size() - 1].z;
+// 	};
 
-	float x_min, x_max, y_min, z_min, y_max, z_max;
-	[&xyz, &leftbottom, &rightup]() {
-		std::sort(xyz.begin(), xyz.end(), [](const vec3& d1, const vec3& d2) { return d1.x > d2.x; });
-		rightup.x = xyz[0].x;
-		leftbottom.x = xyz[xyz.size() - 1].x;
-	}();
-
-	[&xyz, &leftbottom, &rightup]() {
-		std::sort(xyz.begin(), xyz.end(), [](const vec3& d1, const vec3& d2) { return d1.y > d2.y; });
-		rightup.y = xyz[0].y;
-		leftbottom.y = xyz[xyz.size() - 1].y;
-	}();
-
-	[&xyz, &leftbottom, &rightup]() {
-		std::sort(xyz.begin(), xyz.end(), [](const vec3& d1, const vec3& d2) { return d1.z > d2.z; });
-		rightup.z = xyz[0].z;
-		leftbottom.z = xyz[xyz.size() - 1].z;
-	}();
-
-// 	float x_min = std::numeric_limits<float>::max();
-// 	float x_max = -x_min;
-//	float y_min(x_min), z_min(x_min), y_max(x_max), z_max(x_max);
-// 	for (auto iter = xyz.begin(); iter != xyz.end(); ++iter)
-// 	{
-// 		x_min = x_min < iter->x ? x_min : iter->x;
-// 		x_max = x_max > iter->x ? x_max : iter->x;
-// 		y_min = y_min < iter->y ? y_min : iter->y;
-// 		y_max = y_max > iter->y ? y_max : iter->y;
-// 		z_min = z_min < iter->z ? z_min : iter->z;
-// 		z_max = z_max > iter->z ? z_max : iter->z;
-// 	}
-// 	vec3 leftbottom(x_min, y_min, z_min);
-// 	vec3 rightup(x_max, y_max, z_max);
+	float x_min = std::numeric_limits<float>::max();
+	float x_max = -x_min;
+	float y_min(x_min), z_min(x_min), y_max(x_max), z_max(x_max);
+	for (auto iter = xyz.begin(); iter != xyz.end(); ++iter)
+	{
+		x_min = x_min < iter->x ? x_min : iter->x;
+		x_max = x_max > iter->x ? x_max : iter->x;
+		y_min = y_min < iter->y ? y_min : iter->y;
+		y_max = y_max > iter->y ? y_max : iter->y;
+		z_min = z_min < iter->z ? z_min : iter->z;
+		z_max = z_max > iter->z ? z_max : iter->z;
+	}
+	vec3 leftbottom(x_min, y_min, z_min);
+	vec3 rightup(x_max, y_max, z_max);
 	
 	if( m_box != nullptr)
 		delete m_box;
@@ -148,7 +147,7 @@ void GPointCloud::render()
 //	glVertexAttrib3f((GLuint)1, 1.0f, 0.0f, 0.0f);
 	glBindVertexArray(0);
 
-	m_box->render();
+	//m_box->render();
 }
 
 GPointCloud::~GPointCloud()
@@ -186,6 +185,31 @@ GPointCloud::~GPointCloud()
 	
 	if (!_point_source_id.empty())
 		_point_source_id.clear();
+}
+
+void GPointCloud::update_color(const std::vector<uint>& idx, const std::vector<glm::vec3>& rgb) 
+{
+	assert(idx.size() == rgb.size() && rgb.size() < m_rgb.size());
+
+	// 传入空向量，表示直接重置场景颜色
+	if (rgb.empty() && !m_rgb.empty())
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_vboHandles[1]);
+		glBufferData(GL_ARRAY_BUFFER, m_rgb.size() * 3 * sizeof(float), &m_rgb[0].r, GL_DYNAMIC_DRAW);
+		return;
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_vboHandles[1]);
+	float* ptr = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+	// if the pointer is valid(mapped), update VBO
+	if (ptr)
+	{	// modify buffer data
+		for (auto id : idx)
+		{
+			memcpy(ptr + id * 3, &rgb[id].r, 3 * sizeof(float));
+		}
+		glUnmapBuffer(GL_ARRAY_BUFFER);    // unmap it after use
+	}
 }
 
 void GPointCloud::set_intensity(unsigned int N/* = 0*/, float* intensity /*= nullptr*/)

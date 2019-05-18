@@ -14,6 +14,7 @@ using glm::mat4;
 
 class GPointCloud : public GraphicalObject
 {
+	using uint = unsigned int;
 public:
 	GPointCloud(unsigned int N=0, float* xyz = nullptr, float* rgb=nullptr);
 	GPointCloud(std::vector<glm::vec3>& xyz, std::vector<glm::vec3>& m_rgb= std::vector<glm::vec3>());
@@ -36,8 +37,12 @@ public:
 	glm::vec3 get_min_xyz() { return _min_xyz;  }
 	glm::vec3 get_max_xyz() { return _max_xyz; }
 
-	// 重载基类渲染函数
+	// 閲嶈浇鍩虹被娓叉煋鍑芥暟
 	void render();
+	// 鏇存柊鎸囧畾鐐圭殑棰滆壊
+	void update_color(const std::vector<uint>& idx, const std::vector<glm::vec3>& rgb) override;
+	// 鏌ヨ鐐规暟
+	virtual unsigned int get_size() override { return m_xyz.size(); }
 
 private:
 	void Box() { Box(m_xyz); }
@@ -54,7 +59,7 @@ private:
 	std::vector<float> _number_of_return;
 	std::vector<float> _scan_direction_flag;
 	std::vector<float> _edge_of_flight_line;
-	std::vector<float> _classification;
+	std::vector<int> _classification;       // 鐐逛簯鍒嗙被
 	std::vector<float> _scan_angle_rank;
 	std::vector<float> _user_data;
 	std::vector<float> _point_source_id;

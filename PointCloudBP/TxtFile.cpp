@@ -36,7 +36,7 @@ bool CTxtFile::openfile_mapping(CTxtFile* txtf, const std::string& filename)
 		return false;
 	}
 
-	// °ÑÎÄ¼şÊı¾İÓ³Éäµ½½ø³ÌµÄµØÖ·¿Õ¼ä
+	// æŠŠæ–‡ä»¶æ•°æ®æ˜ å°„åˆ°è¿›ç¨‹çš„åœ°å€ç©ºé—´
 	void* pvFile = MapViewOfFile(hMapFile, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
 	char* ptr = (char*)pvFile;
 	
@@ -56,12 +56,12 @@ bool CTxtFile::openfile_mapping(CTxtFile* txtf, const std::string& filename)
 	int columns = calc_columns(ptr);
 	if (columns != 3 && columns >= 6)
 	{
-		AfxMessageBox("Çë×¢Òâ£ºTXTÎÄ¼şÓ¦¸ÃÓĞÈıÁĞ»òÕß´óÓÚµÈÓÚ6ÁĞ");
+		AfxMessageBox("Notes: txt file only can have 3 or more than 6 columns"); // è¯·æ³¨æ„ï¼šTXTæ–‡ä»¶åº”è¯¥æœ‰ä¸‰åˆ—æˆ–è€…å¤§äºç­‰äº6åˆ—
 		return false;
 	}
 
 	int nstep = floor(line_num / 100.0);
-	// ½ø¶ÈÌõ´°¿Ú
+	// è¿›åº¦æ¡çª—å£
 	CProgressStatusDlg *dlg = new CProgressStatusDlg();
 	dlg->Create(IDD_PROGRESS_DLG, AfxGetMainWnd());
 	dlg->ShowWindow(SW_SHOW);
@@ -148,7 +148,7 @@ bool CTxtFile::openfile_mapping(CTxtFile* txtf, const std::string& filename)
 
 	free(str);
 		
-	// ½áÊøÁË£¬¹Ø±ÕÎÄ¼şÓ³Éä.
+	// ç»“æŸäº†ï¼Œå…³é—­æ–‡ä»¶æ˜ å°„.
 	UnmapViewOfFile(pvFile);
 	CloseHandle(hFile);
 
@@ -161,7 +161,7 @@ bool CTxtFile::openfile_mapping(CTxtFile* txtf, const std::string& filename)
 
 int CTxtFile::calc_columns(const char * Str, int readed, char* seps)
 {
-	char * str = strdup(Str);  // ÇĞ¼ÉĞèÒªfree(str).
+	char * str = strdup(Str);  // åˆ‡å¿Œéœ€è¦free(str).
 	char * pos = strchr(str, '\n');
 	if (pos != NULL) {
 		*pos = '\0';
@@ -223,10 +223,7 @@ CTxtFile::~CTxtFile()
 
 void CTxtFile::normalize(std::vector<glm::vec3>& xyz, glm::vec3 offset)
 {
-	for (std::vector<glm::vec3>::iterator iter= xyz.begin(); iter != xyz.end(); ++iter)
-	{
-		*iter -= offset;
-	}
+	std::transform(xyz.begin(), xyz.end(), xyz.begin(), [offset](const glm::vec3& v) { return v - offset; });
 }
 
 glm::vec3 CTxtFile::center(std::vector<glm::vec3>& xyz)

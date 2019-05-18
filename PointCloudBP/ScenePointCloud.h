@@ -17,6 +17,7 @@ using glm::vec3;
 
 class ScenePointCloud :	public Scene
 { 
+	using uint = unsigned int;
 public:
 	ScenePointCloud();
 	~ScenePointCloud();
@@ -26,15 +27,14 @@ private:
 	GLSLProgram prog;
 
 	int m_view_width, m_view_height;
-	float m_depthz;
-	glm::vec3 m_obj_rotate;
-	glm::vec3 m_obj_translate;
-	glm::vec3 m_scene_offset;
-	float m_initial_radius;
+	float m_depthz, m_initdepth; // åˆ†åˆ«è®°å½•å½“å‰æ·±åº¦å’Œåœºæ™¯åˆå§‹è½½å…¥æ·±åº¦
+	glm::vec3 m_obj_rotate{ .0f, .0f, .0f };;
+	glm::vec3 m_obj_translate{.0f, .0f, .0f};
+	glm::vec3 m_scene_offset{ .0f, .0f, .0f };
 	
-	// ¶¨ÒåÁËÕû¸ö»æÖÆ³¡¾°µÄÈ«²¿¶ÔÏó°üÎ§ºĞºÍ»æÖÆ¶ÔÏó
-	BoundBox *m_box;                              // Õû¸ö³¡¾°µÄ°üÎ§ºĞ
-	std::vector<GraphicalObject*>  m_graphicObjs; // ³¡¾°¶ÔÏó
+	// å®šä¹‰äº†æ•´ä¸ªç»˜åˆ¶åœºæ™¯çš„å…¨éƒ¨å¯¹è±¡åŒ…å›´ç›’å’Œç»˜åˆ¶å¯¹è±¡
+	BoundBox *m_box;                              // æ•´ä¸ªåœºæ™¯çš„åŒ…å›´ç›’
+	std::vector<GraphicalObject*>  m_graphicObjs; // åœºæ™¯å¯¹è±¡
 
 	glm::mat4 m_model;
 	glm::mat4 m_view;
@@ -51,7 +51,11 @@ private:
 public:
 	glm::vec3 get_scene_offset();
 	void update(float t);
-	void render_old(); // ×÷·Ï
+	// ä¿®æ”¹m_graphicObjs[obj_id]ä¸­ç‚¹xyz[idx]çš„é¢œè‰²
+	void update_color(const std::vector<uint>& idx, const std::vector<glm::vec3>& rgb, uint obj_id = 0);
+	// æŸ¥è¯¢æŒ‡å®šç‚¹äº‘åœºæ™¯ä¸­çš„ç‚¹æ•°é‡
+	unsigned int get_point_number(uint obj_id=0);
+	void render_old(); // ä½œåºŸ
 	void render();
 	void resize(int, int);
 	void setLookAt(vec3 const & eye = vec3(0.0f, 0.0f, 10.0f), glm::vec3 const & center= vec3(0.0f, 0.0f, 0.0f), glm::vec3 const & up= vec3(0.0f, 1.0f, 0.0f));
@@ -60,9 +64,10 @@ public:
 	void zoom(int zDelta);
 	void rotate(float xDelta, float zDelta);
 	void translate(int xDelta, int yDelta);
+	// é‡ç½®åœºæ™¯æ—‹è½¬å’Œå¹³ç§»
 	void reset();
-	void add_obj(GraphicalObject *obj, glm::vec3 offset=glm::vec3()); // Ïò³¡¾°ÖĞÌí¼ÓÒ»¸ö¶ÔÏó
-	bool pickpoint(int winx, int winy, glm::vec3& picked,int active_pcl=0); // ´Óµ±Ç°»î¶¯µÄµãÔÆÊı¾İÖĞÊ°È¡µãÊı¾İ
+	void add_obj(GraphicalObject *obj, glm::vec3 offset=glm::vec3()); // å‘åœºæ™¯ä¸­æ·»åŠ ä¸€ä¸ªå¯¹è±¡
+	bool pickpoint(int winx, int winy, glm::vec3& picked,int active_pcl=0); // ä»å½“å‰æ´»åŠ¨çš„ç‚¹äº‘æ•°æ®ä¸­æ‹¾å–ç‚¹æ•°æ®
 	bool empty() { return m_graphicObjs.empty(); }
-	bool clear(); // Çå³ıÒÑ¾­¼ÓÔØµÄÊı¾İ
+	void clear(); // æ¸…é™¤å·²ç»åŠ è½½çš„æ•°æ®
 };

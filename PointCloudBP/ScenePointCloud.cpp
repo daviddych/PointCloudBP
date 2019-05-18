@@ -16,31 +16,38 @@ using glm::vec3;
 #include <glm/gtx/transform.hpp>
 #include <algorithm>
 
-ScenePointCloud::ScenePointCloud():m_depthz(0.0f)
+ScenePointCloud::ScenePointCloud():m_depthz(0.0f), m_initdepth(0.0f)
 {
 	initialize_rotate_angle();
 
 	m_box = nullptr;
-	m_initial_radius = 0;
+	m_initdepth = 0;
 }
 
 ScenePointCloud::~ScenePointCloud()
 {
-	if (m_box != m_box)
-	{
+	clear();
+}
+
+void ScenePointCloud::clear()
+{
+	if (m_box != m_box) {
 		delete m_box;
 		m_box = nullptr;
 	}
-	if (!m_graphicObjs.empty())
-	{
-		for (size_t i =0; i<m_graphicObjs.size(); ++i)
-		{
-			if (m_graphicObjs[i] != nullptr)
-			{
-				delete m_graphicObjs[i];
-				m_graphicObjs[i] = nullptr;
-			}
+
+	if (!m_graphicObjs.empty()) {
+		for (auto& obj : m_graphicObjs) {
+			delete obj;
+			obj = nullptr;
 		}
+		m_graphicObjs.clear();
+// 		for (size_t i = 0; i < m_graphicObjs.size(); ++i)
+// 		{
+// 			delete m_graphicObjs[i];
+// 			m_graphicObjs[i] = nullptr;
+// 		}
+// 		m_graphicObjs.clear();
 	}
 }
 
@@ -104,8 +111,26 @@ void ScenePointCloud::update(float t)
 	}
 }
 
+void ScenePointCloud::update_color(const std::vector<uint>& idx, const std::vector<glm::vec3>& rgb, uint obj_id)
+{
+	if (m_graphicObjs.empty() || m_graphicObjs.size() <= obj_id)
+		return;
+
+	GraphicalObject *graphicObjs = m_graphicObjs[obj_id];
+	graphicObjs->update_color(idx, rgb);
+}
+
+unsigned int ScenePointCloud::get_point_number(uint obj_id) 
+{
+	if (m_graphicObjs.empty() || m_graphicObjs.size() <= obj_id)
+		return 0;
+
+	GraphicalObject *graphicObjs = m_graphicObjs[obj_id];
+	return graphicObjs->get_size();
+}
+
 void ScenePointCloud::render_old()
-{// ×÷·Ï
+{// ä½œåºŸ
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glm::vec4 lightPos = vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -150,7 +175,7 @@ void ScenePointCloud::render()
 	m_model *= glm::rotate(glm::radians(m_obj_rotate.y), vec3(0.0f, 1.0f, 0.0f));
 	m_model *= glm::rotate(glm::radians(m_obj_rotate.x), vec3(1.0f, 0.0f, 0.0f));
 	//if (m_box != nullptr)
-	//{ // ²âÊÔ½á¹û±íÃ÷£¬Êı¾İÌ«´óÊÇ£¬»á´æÔÚ»æÖÆÆ«²î
+	//{ // æµ‹è¯•ç»“æœè¡¨æ˜ï¼Œæ•°æ®å¤ªå¤§æ—¶ï¼Œä¼šå­˜åœ¨ç»˜åˆ¶åå·®
 	//	m_model *= glm::translate(glm::vec3(-m_box->_center.x, -m_box->_center.y, -m_box->_center.z));
 	//}
 	
@@ -159,9 +184,9 @@ void ScenePointCloud::render()
 	// draw objects
 	if (!m_graphicObjs.empty())
 	{
-		for (size_t i =0; i<m_graphicObjs.size(); ++i)
+		for (const auto& obj : m_graphicObjs)
 		{
-			m_graphicObjs[i]->render();
+			obj->render();
 		}
 		m_box->render();
 	}
@@ -174,17 +199,25 @@ glm::vec3 ScenePointCloud::get_scene_offset()
 
 void ScenePointCloud::setSceneView(BoundBox* box)
 {
-	if (m_box == nullptr)
+// 	if (m_box != nullptr)
+// 		delete m_box;
+// 
+// 	m_box = new BoundBox(box);
+
+	if (m_box==nullptr)
 	{
 		m_box = new BoundBox(box);
-		m_depthz = -std::max(m_box->_x_length, std::max(m_box->_y_length, m_box->_z_length)) *1.73f;
-		m_initial_radius = m_depthz;
-		setLookAt(m_box->_center + glm::vec3(0, 0, 1), m_box->_center);
 	}
 	else
 	{
-		m_box = m_box->Union(box->_leftbottom, box->_rightup);
-	}	
+		m_box->update(box);
+	}
+
+	m_depthz = -std::max(m_box->_x_length, std::max(m_box->_y_length, m_box->_z_length)) *1.73f;
+	m_initdepth = m_depthz;
+	m_initdepth = m_depthz;
+	setLookAt(m_box->_center + glm::vec3(0, 0, 1), m_box->_center);
+	//_cprintf("adf\n");
 }
 
 void ScenePointCloud::setSceneView(glm::vec3 obj_xyz_min, glm::vec3 obj_xyz_center, glm::vec3 obj_xyz_max)
@@ -192,20 +225,21 @@ void ScenePointCloud::setSceneView(glm::vec3 obj_xyz_min, glm::vec3 obj_xyz_cent
 	if (m_box == nullptr)
 	{
 		m_box = new BoundBox(obj_xyz_min, obj_xyz_max);
-		m_depthz = -std::max(m_box->_x_length, std::max(m_box->_y_length, m_box->_z_length)) *1.73f;
-		m_initial_radius = m_depthz;
-		setLookAt(m_box->_center + glm::vec3(0, 0, 1), m_box->_center);
 	}
 	else
 	{
-		*m_box= m_box->Union(obj_xyz_min, obj_xyz_max);
+		m_box->plus(obj_xyz_min, obj_xyz_max);
 	}
+	m_depthz = -std::max(m_box->_x_length, std::max(m_box->_y_length, m_box->_z_length)) *1.73f;
+	m_initdepth = m_depthz;
+	setLookAt(m_box->_center + glm::vec3(0, 0, 1), m_box->_center);
+	_cprintf("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n");
 }
 
 void ScenePointCloud::zoom(int zDelta)
 {
 	m_depthz += m_box->_z_length*zDelta*0.05f;
-	_cprintf("zDelta = %d, depth = %f\n", zDelta, m_depthz/m_initial_radius);
+	_cprintf("zDelta = %d, depth = %f\n", zDelta, m_depthz/m_initdepth);
 }
 
 void ScenePointCloud::rotate(float xDelta, float zDelta)
@@ -262,20 +296,21 @@ void ScenePointCloud::resize(int w, int h)
 void ScenePointCloud::reset()
 {
 	initialize_rotate_angle();
-	m_depthz = m_initial_radius;
+	m_depthz = m_initdepth;
+	m_obj_translate = glm::vec3{.0f, .0f, .0f};
 }
 
 void ScenePointCloud::add_obj(GraphicalObject *obj, glm::vec3 offset)
 {
 	setSceneView(obj->GetBoundBox());
 
-	// È¡Ïû×¢ÊÍ£¬³¡¾°½öÈİÄÉÒ»¸öµãÔÆÊı¾İ¼¯
-// 	if (!m_graphicObjs.empty())
-// 	{
-// 		delete m_graphicObjs[0];
-// 		m_graphicObjs[0] = nullptr;
-// 		m_graphicObjs.clear();
-// 	}
+	// æ¸…ç©ºåœºæ™¯ï¼Œä»…å®¹çº³ä¸€ä¸ªç‚¹äº‘æ•°æ®é›†
+	if (!m_graphicObjs.empty())
+	{
+		delete m_graphicObjs[0];
+		m_graphicObjs[0] = nullptr;
+		m_graphicObjs.clear();
+	}
 	m_graphicObjs.push_back(obj);
 	m_scene_offset = offset;
 }
@@ -290,7 +325,7 @@ glm::vec3  ScenePointCloud::unproject(glm::vec3 screenCoords)
 	return glm::unProject(screenCoords,m_model,m_projection, glm::vec4(0, 0, m_view_width, m_view_height));
 }
 
-// ±éÀúËùÓĞµãÔÚÆÁÄ»ÉÏµÄ×ø±ê£¬ËÑË÷³öµã£¨winx£¬winy£©µÄ×î½üµã¡£
+// éå†æ‰€æœ‰ç‚¹åœ¨å±å¹•ä¸Šçš„åæ ‡ï¼Œæœç´¢å‡ºç‚¹ï¼ˆwinxï¼Œwinyï¼‰çš„æœ€è¿‘ç‚¹ã€‚
 bool ScenePointCloud::pickpoint(int winx, int winy, glm::vec3& picked, int active_pcl)
 {
 	if (m_graphicObjs.empty())
@@ -317,17 +352,3 @@ bool ScenePointCloud::pickpoint(int winx, int winy, glm::vec3& picked, int activ
 	return true;
 }
 
-bool ScenePointCloud::clear()
-{
-	if (m_graphicObjs.empty())
-		return true;
-
-	for (size_t i=0; i<m_graphicObjs.size(); ++i)
-	{
-		delete m_graphicObjs[i];
-	}
-	m_graphicObjs.clear();
-
-	delete m_box;
-	m_box = nullptr;
-}

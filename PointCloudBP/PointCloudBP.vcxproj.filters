@@ -63,6 +63,7 @@
     <None Include="..\glsl\pointcloud.vert">
       <Filter>glsl</Filter>
     </None>
+    <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ingredients\drawable.h">

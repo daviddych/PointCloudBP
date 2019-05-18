@@ -1,5 +1,5 @@
 
-// PointCloudBPView.h : CPointCloudBPView ÀàµÄ½Ó¿Ú
+// PointCloudBPView.h : CPointCloudBPView ç±»çš„æ¥å£
 //
 
 // Include the OpenGL headers
@@ -13,27 +13,29 @@
 
 class CPointCloudBPView : public CView
 {
-protected: // ½ö´ÓĞòÁĞ»¯´´½¨
+protected: // ä»…ä»åºåˆ—åŒ–åˆ›å»º
 	CPointCloudBPView();
 	DECLARE_DYNCREATE(CPointCloudBPView)
 
-// ÌØĞÔ
+// ç‰¹æ€§
 public:
 	CPointCloudBPDoc* GetDocument() const;
 
-// ²Ù×÷
+// æ“ä½œ
 public:
+	// æ¸…ç©ºåœºæ™¯
+	void ClearScene(); 
 
-// ÖØĞ´
+// é‡å†™
 public:
-	virtual void OnDraw(CDC* pDC);  // ÖØĞ´ÒÔ»æÖÆ¸ÃÊÓÍ¼
+	virtual void OnDraw(CDC* pDC);  // é‡å†™ä»¥ç»˜åˆ¶è¯¥è§†å›¾
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
-// ÊµÏÖ
+// å®ç°
 public:
 	virtual ~CPointCloudBPView();
 #ifdef _DEBUG
@@ -51,7 +53,7 @@ private:
 	//void SetError(int e);
 	//static const char* const _ErrorStrings[];
 
-// Éú³ÉµÄÏûÏ¢Ó³Éäº¯Êı
+// ç”Ÿæˆçš„æ¶ˆæ¯æ˜ å°„å‡½æ•°
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
@@ -69,7 +71,7 @@ public:
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 };
 
-#ifndef _DEBUG  // PointCloudBPView.cpp ÖĞµÄµ÷ÊÔ°æ±¾
+#ifndef _DEBUG  // PointCloudBPView.cpp ä¸­çš„è°ƒè¯•ç‰ˆæœ¬
 inline CPointCloudBPDoc* CPointCloudBPView::GetDocument() const
    { return reinterpret_cast<CPointCloudBPDoc*>(m_pDocument); }
 #endif

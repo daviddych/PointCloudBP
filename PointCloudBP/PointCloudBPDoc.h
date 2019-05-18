@@ -52,5 +52,10 @@ protected:
 #endif // SHARED_HANDLERS
 public:
 	afx_msg void OnFileOpen();
+
+	// 获得data文件夹路径
+	CString get_data_path();
+
 	FileObj *m_fileobj;
+	void release_fileobj();
 };

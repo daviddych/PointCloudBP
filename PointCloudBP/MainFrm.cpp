@@ -1,5 +1,5 @@
 
-// MainFrm.cpp : CMainFrame ÀàµÄÊµÏÖ
+// MainFrm.cpp : CMainFrame ç±»çš„å®žçŽ°
 //
 
 #include "stdafx.h"
@@ -26,17 +26,17 @@ END_MESSAGE_MAP()
 
 static UINT indicators[] =
 {
-	ID_SEPARATOR,           // ×´Ì¬ÐÐÖ¸Ê¾Æ÷
+	ID_SEPARATOR,           // çŠ¶æ€è¡ŒæŒ‡ç¤ºå™¨
 	ID_INDICATOR_CAPS,
 	ID_INDICATOR_NUM,
 	ID_INDICATOR_SCRL,
 };
 
-// CMainFrame ¹¹Ôì/Îö¹¹
+// CMainFrame æž„é€ /æžæž„
 
 CMainFrame::CMainFrame()
 {
-	// TODO: ÔÚ´ËÌí¼Ó³ÉÔ±³õÊ¼»¯´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æˆå‘˜åˆå§‹åŒ–ä»£ç 
 }
 
 CMainFrame::~CMainFrame()
@@ -50,7 +50,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!m_wndStatusBar.Create(this))
 	{
-		TRACE0("Î´ÄÜ´´½¨×´Ì¬À¸\n");
+		TRACE0("æœªèƒ½åˆ›å»ºçŠ¶æ€æ \n");
 		return -1;     
 	}
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
@@ -64,13 +64,13 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	if( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
 
-	//  CREATESTRUCT cs À´ÐÞ¸Ä´°¿ÚÀà»òÑùÊ½
+	//  CREATESTRUCT cs æ¥ä¿®æ”¹çª—å£ç±»æˆ–æ ·å¼
 	cs.style &= ~FWS_ADDTOTITLE;
 
 	return TRUE;
 }
 
-// CMainFrame Õï¶Ï
+// CMainFrame è¯Šæ–­
 
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
@@ -85,7 +85,7 @@ void CMainFrame::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 
-// CMainFrame ÏûÏ¢´¦Àí³ÌÐò
+// CMainFrame æ¶ˆæ¯å¤„ç†ç¨‹åº
 LRESULT CMainFrame::LoadFileComplete_MsgHandler(WPARAM wparam, LPARAM lparam)
 {
 	CPointCloudBPView* pView = (CPointCloudBPView*)GetActiveView();
@@ -94,22 +94,21 @@ LRESULT CMainFrame::LoadFileComplete_MsgHandler(WPARAM wparam, LPARAM lparam)
 	if (fileobj == nullptr)
 		return -1;
 	
-	// ÔÊÐí¶à´Îµ¼ÈëÊý¾Ý½øÐÐµþ¼ÓÏÔÊ¾¡£
+	// å…è®¸å¤šæ¬¡å¯¼å…¥æ•°æ®è¿›è¡Œå åŠ æ˜¾ç¤ºã€‚
 	glm::vec3 offset;
-	if (!pView->m_scene.empty())
-	{
-		glm::vec3 offset = pView->m_scene.get_scene_offset();
-		fileobj->update_offset(offset);
-	}
+// 	if (!pView->m_scene.empty())
+// 	{
+// 		glm::vec3 offset = pView->m_scene.get_scene_offset();
+// 		fileobj->update_offset(offset);
+// 	}
 	GPointCloud *pointCloud = new GPointCloud(fileobj->get_xyz(), fileobj->get_rgb());
 	offset = fileobj->get_offset();
-	delete fileobj;
 	pView->m_scene.add_obj(pointCloud, offset);
 	pView->Invalidate(TRUE);
 	return 0;
 }
 
-// Èç¹û³¡¾°ÖÐÒÑ¾­¼ÓÔØÁËÊý¾Ý¾ÍÇå³ý
+// å¦‚æžœåœºæ™¯ä¸­å·²ç»åŠ è½½äº†æ•°æ®å°±æ¸…é™¤
 void CMainFrame::OnFileClear()
 {
 	CPointCloudBPView* pView = (CPointCloudBPView*)GetActiveView();
@@ -118,11 +117,9 @@ void CMainFrame::OnFileClear()
 	if (fileobj == nullptr)
 		return;
 
-	// ÔÊÐí¶à´Îµ¼ÈëÊý¾Ý½øÐÐµþ¼ÓÏÔÊ¾¡£
-	glm::vec3 offset;
-	if (!pView->m_scene.empty())
-	{
-		pView->m_scene.clear();
+	//glm::vec3 offset;
+	if (pView != NULL) {
+		pView->ClearScene();
+		pView->Invalidate(TRUE);
 	}
-	pView->Invalidate(TRUE);
 }

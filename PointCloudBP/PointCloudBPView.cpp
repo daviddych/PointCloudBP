@@ -274,3 +274,12 @@ void CPointCloudBPView::OnRButtonDown(UINT nFlags, CPoint point)
 	}
 	CView::OnRButtonDown(nFlags, point);
 }
+
+void CPointCloudBPView::ClearScene()
+{
+	if (!m_scene.empty())
+	{
+		m_scene.clear();
+		m_select_model = false;
+	}
+}
