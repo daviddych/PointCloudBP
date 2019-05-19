@@ -120,6 +120,36 @@ void ScenePointCloud::update_color(const std::vector<uint>& idx, const std::vect
 	graphicObjs->update_color(idx, rgb);
 }
 
+void ScenePointCloud::update_color(SHOW_COLOR_TYPE color_type) 
+{
+	if (m_graphicObjs.empty())
+		return;
+
+	for (auto obj : m_graphicObjs)
+	{
+		GPointCloud* pcd = dynamic_cast<GPointCloud*>(obj);
+		if (pcd)
+		{
+			std::vector<unsigned int>& idx = pcd->get_point_source_id();
+			std::vector<glm::vec3> & rgb =
+				color_type == SHOW_COLOR_TYPE::SH_REAL ? pcd->get_rgb() :
+				color_type == SHOW_COLOR_TYPE::SH_ALTITUDE ? colorMap(pcd->get_altitudes()) :
+				color_type == SHOW_COLOR_TYPE::SH_CLASSIFICATION ? colorMap(pcd->get_classification()) : 
+				color_type == SHOW_COLOR_TYPE::SH_RETURNS ? colorMap(pcd->get_number_of_return()) : 
+				color_type == SHOW_COLOR_TYPE::SH_INTENSIFY ? colorMap(pcd->get_intensity()) : std::vector<glm::vec3>();
+
+			if(!rgb.empty())
+				pcd->update_color(idx, rgb);
+		}
+	}
+}
+
+
+std::vector<glm::vec3> ScenePointCloud::colorMap(std::vector<float> &data)
+{
+	return std::move(jetMap.colorMap(data));
+}
+
 unsigned int ScenePointCloud::get_point_number(uint obj_id) 
 {
 	if (m_graphicObjs.empty() || m_graphicObjs.size() <= obj_id)
@@ -215,9 +245,7 @@ void ScenePointCloud::setSceneView(BoundBox* box)
 
 	m_depthz = -std::max(m_box->_x_length, std::max(m_box->_y_length, m_box->_z_length)) *1.73f;
 	m_initdepth = m_depthz;
-	m_initdepth = m_depthz;
 	setLookAt(m_box->_center + glm::vec3(0, 0, 1), m_box->_center);
-	//_cprintf("adf\n");
 }
 
 void ScenePointCloud::setSceneView(glm::vec3 obj_xyz_min, glm::vec3 obj_xyz_center, glm::vec3 obj_xyz_max)
@@ -228,12 +256,12 @@ void ScenePointCloud::setSceneView(glm::vec3 obj_xyz_min, glm::vec3 obj_xyz_cent
 	}
 	else
 	{
-		m_box->plus(obj_xyz_min, obj_xyz_max);
+		//m_box->plus(obj_xyz_min, obj_xyz_max);
+		m_box->assign_coords(obj_xyz_min, obj_xyz_max);
 	}
 	m_depthz = -std::max(m_box->_x_length, std::max(m_box->_y_length, m_box->_z_length)) *1.73f;
 	m_initdepth = m_depthz;
 	setLookAt(m_box->_center + glm::vec3(0, 0, 1), m_box->_center);
-	_cprintf("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n");
 }
 
 void ScenePointCloud::zoom(int zDelta)

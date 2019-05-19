@@ -42,6 +42,11 @@ BEGIN_MESSAGE_MAP(CPointCloudBPView, CView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
+	ON_COMMAND(ID_REALCOLOR, &CPointCloudBPView::OnRealcolor)
+	ON_COMMAND(ID_ALTITUDECOLOR, &CPointCloudBPView::OnAltitudecolor)
+	ON_COMMAND(ID_CLASSIFYCOLOR, &CPointCloudBPView::OnClassifycolor)
+	ON_COMMAND(ID_INTENSITYCOLOR, &CPointCloudBPView::OnIntensitycolor)
+	ON_COMMAND(ID_RETURNCOLOR, &CPointCloudBPView::OnReturncolor)
 END_MESSAGE_MAP()
 
 //// You will add stuff here!!!!
@@ -282,4 +287,39 @@ void CPointCloudBPView::ClearScene()
 		m_scene.clear();
 		m_select_model = false;
 	}
+}
+
+// 显示模式->显示真实颜色
+void CPointCloudBPView::OnRealcolor()
+{
+	m_scene.update_color(SHOW_COLOR_TYPE::SH_REAL);
+	Invalidate(TRUE);
+}
+
+// 显示模式->按照高程着伪彩色
+void CPointCloudBPView::OnAltitudecolor()
+{
+	m_scene.update_color(SHOW_COLOR_TYPE::SH_ALTITUDE);
+	Invalidate(TRUE);
+}
+
+// 显示模式->按照类别着伪彩色
+void CPointCloudBPView::OnClassifycolor()
+{
+	m_scene.update_color(SHOW_COLOR_TYPE::SH_CLASSIFICATION);
+	Invalidate(TRUE);
+}
+
+// 显示模式->按照回波强度着伪彩色
+void CPointCloudBPView::OnIntensitycolor()
+{
+	m_scene.update_color(SHOW_COLOR_TYPE::SH_INTENSIFY);
+	Invalidate(TRUE);
+}
+
+// 显示模式->按照回波次数着伪彩色
+void CPointCloudBPView::OnReturncolor()
+{
+	m_scene.update_color(SHOW_COLOR_TYPE::SH_RETURNS);
+	Invalidate(TRUE);
 }

@@ -33,6 +33,11 @@ public:
 	BoundBox* get_box() { return m_box;  }
 	std::vector<glm::vec3> get_xyz() { return m_xyz; }
 	std::vector<glm::vec3> get_rgb() { return m_rgb; }
+	std::vector<float> get_intensity();
+	std::vector<float> get_number_of_return();
+	std::vector<float>   get_classification();
+	std::vector<float>   get_altitudes();
+	std::vector<uint> get_point_source_id();
 	glm::vec3 get_center_xyz() { return _center_xyz; }
 	glm::vec3 get_min_xyz() { return _min_xyz;  }
 	glm::vec3 get_max_xyz() { return _max_xyz; }
@@ -54,15 +59,15 @@ private:
 	std::vector<glm::vec3> m_xyz;
 	std::vector<glm::vec3> m_rgb;
 	std::vector<glm::vec3> _normal_xyz;
-	std::vector<float> _intensity;
-	std::vector<float> _return_number;
-	std::vector<float> _number_of_return;
-	std::vector<float> _scan_direction_flag;
-	std::vector<float> _edge_of_flight_line;
-	std::vector<int> _classification;       // 点云分类
-	std::vector<float> _scan_angle_rank;
-	std::vector<float> _user_data;
-	std::vector<float> _point_source_id;
+	std::vector<float>     _intensity;
+	std::vector<float>     _return_number;
+	std::vector<float>     _number_of_return;
+	std::vector<float>     _scan_direction_flag;
+	std::vector<float>     _edge_of_flight_line;
+	std::vector<float>       _classification;       // 点云分类
+	std::vector<float>     _scan_angle_rank;
+	std::vector<float>     _user_data;
+	std::vector<uint>      _point_source_id;
 	
 	glm::vec3 _center_xyz;
 	glm::vec3 _min_xyz;

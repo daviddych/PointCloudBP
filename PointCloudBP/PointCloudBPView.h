@@ -69,6 +69,11 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRealcolor();
+	afx_msg void OnAltitudecolor();
+	afx_msg void OnClassifycolor();
+	afx_msg void OnIntensitycolor();
+	afx_msg void OnReturncolor();
 };
 
 #ifndef _DEBUG  // PointCloudBPView.cpp 中的调试版本

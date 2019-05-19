@@ -319,3 +319,45 @@ void GPointCloud::set_point_source_id(unsigned int N/* = 0*/, float* point_sourc
 		}
 	}
 }
+
+std::vector<unsigned int> GPointCloud::get_point_source_id() 
+{
+	if (m_xyz.size() != _point_source_id.size())
+	{
+		_point_source_id.resize(m_xyz.size());
+		for (size_t i = 0; i < m_xyz.size(); ++i)
+			_point_source_id[i] = i;
+
+	}
+	return _point_source_id; 
+}
+
+std::vector<float> GPointCloud::get_intensity() { 
+	if (_intensity.empty())
+		_intensity.resize(m_xyz.size(), 0.0f);
+	return _intensity; 
+}
+
+std::vector<float> GPointCloud::get_number_of_return() {
+	if (_number_of_return.empty())
+		_number_of_return.resize(m_xyz.size(), 0.0f);
+	return _number_of_return; 
+}
+
+std::vector<float>   GPointCloud::get_classification() 
+{ 
+	if (_classification.empty())
+		_classification.resize(m_xyz.size(), 0.0f);
+	return _classification; 
+}
+
+std::vector<float>  GPointCloud::get_altitudes()
+{
+	std::vector<float> altis(m_xyz.size());
+	for (size_t i = 0; i < m_xyz.size(); ++i)
+	{
+		altis[i] = m_xyz[i].z;
+	}
+
+	return std::move(altis);
+}

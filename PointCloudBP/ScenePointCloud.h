@@ -11,9 +11,12 @@
 #include <vector>
 #include "GPointCloud.h"
 #include <vector>
+#include "ColorMap.h"
 
 using glm::mat4;
 using glm::vec3;
+
+enum class SHOW_COLOR_TYPE{SH_REAL,SH_ALTITUDE, SH_CLASSIFICATION, SH_INTENSIFY, SH_RETURNS};
 
 class ScenePointCloud :	public Scene
 { 
@@ -35,6 +38,7 @@ private:
 	// 定义了整个绘制场景的全部对象包围盒和绘制对象
 	BoundBox *m_box;                              // 整个场景的包围盒
 	std::vector<GraphicalObject*>  m_graphicObjs; // 场景对象
+	JetMap jetMap;
 
 	glm::mat4 m_model;
 	glm::mat4 m_view;
@@ -47,12 +51,15 @@ private:
 	glm::vec3  project(glm::vec3 obj);	// Get screen coordinates from an object point
 	glm::vec3  unproject(glm::vec3 screenCoords);	// Get object coordinates from an screen point
 
-	
-public:
-	glm::vec3 get_scene_offset();
-	void update(float t);
 	// 修改m_graphicObjs[obj_id]中点xyz[idx]的颜色
 	void update_color(const std::vector<uint>& idx, const std::vector<glm::vec3>& rgb, uint obj_id = 0);
+	// 分析数据，转换为JET颜色映射，返回rgb颜色信息
+	std::vector<glm::vec3> colorMap(std::vector<float> &data);
+public:
+	// 
+	void update_color(SHOW_COLOR_TYPE color_type=SHOW_COLOR_TYPE::SH_REAL);
+	glm::vec3 get_scene_offset();
+	void update(float t);
 	// 查询指定点云场景中的点数量
 	unsigned int get_point_number(uint obj_id=0);
 	void render_old(); // 作废

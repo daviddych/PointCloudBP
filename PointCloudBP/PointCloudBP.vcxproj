@@ -222,6 +222,7 @@
     <ClInclude Include="..\ingredients\drawable.h" />
     <ClInclude Include="..\ingredients\scene.h" />
     <ClInclude Include="BoundBox.h" />
+    <ClInclude Include="ColorMap.h" />
     <ClInclude Include="FileObj.h" />
     <ClInclude Include="GPoint.h" />
     <ClInclude Include="GPointCloud.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="..\ingredients\vboteapot.cpp" />
     <ClCompile Include="..\ingredients\vbotorus.cpp" />
     <ClCompile Include="BoundBox.cpp" />
+    <ClCompile Include="ColorMap.cpp" />
     <ClCompile Include="FileObj.cpp" />
     <ClCompile Include="GPoint.cpp" />
     <ClCompile Include="GPointCloud.cpp" />

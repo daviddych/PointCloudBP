@@ -31,13 +31,10 @@ BoundBox::BoundBox(const BoundBox* box)
 	init_graphic();
 }
 
-void BoundBox::assign_coords(const BoundBox* box)
+void BoundBox::assign_coords(const vec3& lb, const vec3& ru)
 {
-	if (box == nullptr)
-		return;
-
-	_leftbottom = box->_leftbottom;
-	_rightup = box->_rightup;
+	_leftbottom = lb;
+	_rightup = ru;
 	_center = (_leftbottom + _rightup) / 2.0f;
 
 	glm::vec3 pt = _rightup - _leftbottom;
@@ -45,6 +42,14 @@ void BoundBox::assign_coords(const BoundBox* box)
 	_x_length = pt.x;
 	_y_length = pt.y;
 	_z_length = pt.z;
+}
+
+void BoundBox::assign_coords(const BoundBox* box)
+{
+	if (box == nullptr)
+		return;
+
+	assign_coords(box->_leftbottom, box->_rightup);
 }
 
 BoundBox::~BoundBox()

@@ -22,7 +22,8 @@ public:
 	// 包围盒求并集
 	BoundBox operator+(const BoundBox& b);
 	BoundBox* plus(const vec3& lb = vec3(), const vec3& ru = vec3());
-	
+	void assign_coords(const vec3& lb, const vec3& ru);
+
 	void render();
 	void update(const BoundBox* box);
 
@@ -34,6 +35,7 @@ public:
 private:
 	void init_graphic();
 	void assign_coords(const BoundBox* box); // 坐标赋值
+	
 
 	unsigned int _vbo[2];
 	unsigned int _vaoHandle;

@@ -27,6 +27,8 @@ load, show and process 3D point cloud while from las or txt file format
 
 6. "Ctrl + 鼠标左键" : 拾取并在状态栏显示点坐标<x, y, z> 
 
-7. “ctrl + 鼠标右键”，显示/隐藏拾取的点
+7. "ctrl + 鼠标右键"，显示/隐藏拾取的点
+
+8. "视图/显示模式"下的菜单项： 可以分别以真实颜色、z坐标、点云分类类型、反射强度和回波数模式，可视化点云
 
 ```

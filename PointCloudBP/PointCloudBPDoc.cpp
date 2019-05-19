@@ -172,16 +172,11 @@ void CPointCloudBPDoc::OnFileOpen()
 	CString ext(m_filename.Right(3));
 	ext.MakeLower();
 
-	FileObj *fileobj;
-	if (ext == "txt")
-	{
-		fileobj = new CTxtFile;
-	}
-	else if (ext == "las")
-	{
-		fileobj = new LasFile;
-	}
-	else
+	FileObj *fileobj = 
+		ext == "txt" ? (FileObj*)(new CTxtFile) : 
+		ext == "las" ? (FileObj*)(new LasFile) : nullptr;
+	
+	if(!fileobj)
 	{
 		MessageBeep(0xFFFFFFFF);
 		MessageBox(NULL, "Unknown Type, only las and txt are supported", "Opps!", MB_OK);
@@ -215,3 +210,4 @@ void CPointCloudBPDoc::release_fileobj() {
 		m_fileobj = nullptr;
 	}
 }
+
