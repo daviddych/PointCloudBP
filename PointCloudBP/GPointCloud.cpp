@@ -334,7 +334,15 @@ std::vector<unsigned int> GPointCloud::get_point_source_id()
 
 std::vector<float> GPointCloud::get_intensity() { 
 	if (_intensity.empty())
+	{
 		_intensity.resize(m_xyz.size(), 0.0f);
+		// _intensity = R*0.299 + G*0.587 + B*0.114
+#pragma omp parallel for
+		for (int i = 0; i < m_rgb.size(); ++i)
+		{
+			_intensity[i] = m_rgb[i].r*0.299f + m_rgb[i].g*0.587f + m_rgb[i].b*0.114f;
+		}
+	}
 	return _intensity; 
 }
 
