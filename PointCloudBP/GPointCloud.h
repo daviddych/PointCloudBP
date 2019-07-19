@@ -64,7 +64,7 @@ private:
 	std::vector<float>     _number_of_return;
 	std::vector<float>     _scan_direction_flag;
 	std::vector<float>     _edge_of_flight_line;
-	std::vector<float>       _classification;       // 点云分类
+	std::vector<float>     _classification;       // 点云分类
 	std::vector<float>     _scan_angle_rank;
 	std::vector<float>     _user_data;
 	std::vector<uint>      _point_source_id;

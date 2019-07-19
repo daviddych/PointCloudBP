@@ -18,5 +18,5 @@ private:
 public:
 	CTxtFile();
 	~CTxtFile();
-	bool openfile(const char* filename);
+	bool openfile(const char* filename, char* parse_string = "xyzirgb") override;
 };

@@ -155,12 +155,6 @@
     <ClCompile Include="LasFile.cpp">
       <Filter>IO</Filter>
     </ClCompile>
-    <ClCompile Include="lasreader.cpp">
-      <Filter>IO</Filter>
-    </ClCompile>
-    <ClCompile Include="laswriter.cpp">
-      <Filter>IO</Filter>
-    </ClCompile>
     <ClCompile Include="BoundBox.cpp">
       <Filter>Graphic</Filter>
     </ClCompile>

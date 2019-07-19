@@ -13,7 +13,7 @@
 CTxtFile::CTxtFile()
 {
 }
-bool CTxtFile::openfile(const char* filename)
+bool CTxtFile::openfile(const char* filename, char* parse_string)
 {
 	boost::thread t{ CTxtFile::openfile_mapping, this, filename };
 	

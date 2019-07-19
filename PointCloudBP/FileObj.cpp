@@ -7,6 +7,20 @@ FileObj::FileObj()
 
 FileObj::~FileObj()
 {
+	release();
+}
+
+void FileObj::release()
+{
+	if (!m_xyz.empty())
+	{
+		m_xyz.clear();
+	}
+
+	if (m_rgb.empty())
+	{
+		m_rgb.clear();
+	}
 }
 
 void FileObj::update_offset(glm::vec3 offset)

@@ -189,7 +189,7 @@ GPointCloud::~GPointCloud()
 
 void GPointCloud::update_color(const std::vector<uint>& idx, const std::vector<glm::vec3>& rgb) 
 {
-	assert(idx.size() == rgb.size() && rgb.size() < m_rgb.size());
+	assert(idx.size() == rgb.size() && rgb.size() <= m_rgb.size());
 
 	// 传入空向量，表示直接重置场景颜色
 	if (rgb.empty() && !m_rgb.empty())
