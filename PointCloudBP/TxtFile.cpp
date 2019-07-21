@@ -51,6 +51,7 @@ bool CTxtFile::openfile_mapping(CTxtFile* txtf, const std::string& filename)
 	}
 	line_num++;
 	txtf->m_xyz.resize(line_num);
+	txtf->m_rgb.resize(line_num, glm::vec3(1.0f,1.0f,1.0f));
 
 	ptr = (char*)pvFile;
 	int columns = calc_columns(ptr);
@@ -119,7 +120,7 @@ bool CTxtFile::openfile_mapping(CTxtFile* txtf, const std::string& filename)
 				ii = 2;
 				break;
 			case 2:
-				txtf->m_xyz[line_i].y = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
+				txtf->m_xyz[line_i].z = (float)atof(token);// _cprintf(" %lf\t", (double)atof(token));
 				ii = 3;
 				break;
 			case 3:
@@ -152,7 +153,7 @@ bool CTxtFile::openfile_mapping(CTxtFile* txtf, const std::string& filename)
 	UnmapViewOfFile(pvFile);
 	CloseHandle(hFile);
 
-	txtf->m_offset = txtf->center(txtf->m_xyz);
+	txtf->m_offset = center(txtf->m_xyz);
 	normalize(txtf->m_xyz, txtf->m_offset);
 
 	txtf->SenCompletedMessage();
@@ -168,7 +169,6 @@ int CTxtFile::calc_columns(const char * Str, int readed, char* seps)
 	}
 
 	int columns = 0;
-
 	char * token = strtok(str, seps);
 	while (token != NULL) {
 		double val = (double)atof(token);
@@ -219,23 +219,4 @@ bool CTxtFile::openfile_ifstream(const std::string& filename)
 
 CTxtFile::~CTxtFile()
 {
-}
-
-void CTxtFile::normalize(std::vector<glm::vec3>& xyz, glm::vec3 offset)
-{
-	std::transform(xyz.begin(), xyz.end(), xyz.begin(), [offset](const glm::vec3& v) { return v - offset; });
-}
-
-glm::vec3 CTxtFile::center(std::vector<glm::vec3>& xyz)
-{
-	auto result = std::minmax_element(xyz.begin(), xyz.end(), [](const glm::vec3 &a, const glm::vec3 &b) { return a.x < b.x; });
-	float min_x((*result.first).x), max_x((*result.second).x);
-
-	result = std::minmax_element(xyz.begin(), xyz.end(), [](const glm::vec3 &a, const glm::vec3 &b) { return a.y < b.y; });
-	float min_y((*result.first).y), max_y((*result.second).y);
-
-	result = std::minmax_element(xyz.begin(), xyz.end(), [](const glm::vec3 &a, const glm::vec3 &b) { return a.z < b.z; });
-	float min_z((*result.first).z), max_z((*result.second).z);
-
-	return glm::vec3(max_x + min_x, max_y + min_y, max_z + min_z) / 2.0f;
 }

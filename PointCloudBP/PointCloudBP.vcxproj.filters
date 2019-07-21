@@ -126,6 +126,9 @@
     <ClInclude Include="ColorMap.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="PcdFile.h">
+      <Filter>IO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ingredients\glslprogram.cpp">
@@ -196,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="ColorMap.cpp">
       <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PcdFile.cpp">
+      <Filter>IO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

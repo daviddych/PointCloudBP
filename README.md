@@ -11,8 +11,10 @@ load, show and process 3D point cloud while from las or txt file format
 
 
 依赖：
-	PCL1.8.1, Eigen
-C:\Program Files\PCL 1.8.1\3rdParty\Boost\include\boost-1_64;C:\Program Files\PCL 1.8.1\3rdParty\Eigen\eigen3;C:\Program Files\PCL 1.8.1\include\pcl-1.8;D:\OpenSource\gl\glew-2.0.0\include;$(ProjectDir)gl;$(ProjectDir);$(ProjectDir)liblas;$(ProjectDir)inc;%(AdditionalIncludeDirectories)
+	pcl1.8.1 + eigen + boost1.64 + liblas + opengl
+
+C:\Program Files\PCL 1.8.1\3rdParty\Eigen\eigen3
+
 
 ```
 交互操作简介

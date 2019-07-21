@@ -14,11 +14,9 @@ public:
 	bool openfile(const char* filename, char* parse_string = "xyzirgb") override;
 
 private:
-	LASreader  *m_lasreader;
-	LASheader  *m_header;
-
+	LASreader    *m_lasreader;
+	LASheader    *m_header;
 	LASreadOpener m_lasreadopener;
 
 	static bool read(LasFile* lasf, std::string filename, char* parse_string = "xyzirgb");
 };
-

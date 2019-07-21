@@ -18,6 +18,7 @@
 //#include <boost/thread.hpp>
 #include "threadfunction.h"
 #include <corecrt_io.h>
+#include "PcdFile.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -149,7 +150,7 @@ void CPointCloudBPDoc::Dump(CDumpContext& dc) const
 void CPointCloudBPDoc::OnFileOpen()
 {
 	CFileDialog fileDialog(TRUE, ".las", NULL,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-		_T("LAS_MODEL(*.las)|*.las|TXT_MODEL(*.txt)|*.txt|Surfit_Dat(*.dat)|*.dat|\
+		_T("LAS_MODEL(*.las)|*.las|Point Cloud Data(*.pcd)|*.pcd|TXT_MODEL(*.txt)|*.txt|Surfit_Dat(*.dat)|*.dat|\
 			xyzi_MODEL(*.xyzi)|*.xyzi|point_line(*.pl)|*.pl|CSV_MODEL(*.csv)|*.csv|所有文件(*.*)|*.*||"));
 	// 标题
 	fileDialog.m_ofn.lpstrTitle = "打开点云数据";
@@ -174,7 +175,8 @@ void CPointCloudBPDoc::OnFileOpen()
 
 	FileObj *fileobj = 
 		ext == "txt" ? (FileObj*)(new CTxtFile) : 
-		ext == "las" ? (FileObj*)(new LasFile) : nullptr;
+		ext == "las" ? (FileObj*)(new LasFile) : 
+		ext == "pcd" ? (FileObj*)(new PcdFile) : nullptr;
 	
 	if(!fileobj)
 	{

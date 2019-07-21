@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "LasFile.h"
-//#include <liblas/liblas.hpp>
 #include <fstream>  
 #include <iostream> 
 #include "Resource.h"
@@ -42,12 +41,6 @@ bool LasFile::read(LasFile* lasf, std::string filename, char* parse_string)
 	// (maybe) open laswaveform13reader
 	LASwaveform13reader* laswaveform13reader = lasf->m_lasreadopener.open_waveform13(&lasf->m_lasreader->header);
 	lasf->m_header = &(lasf->m_lasreader->header);
-
-// 	FILE *fpi = fopen(filename.c_str(), "rb");
-// 	lasf->m_lasreader = new LASreader();
-// 
-// 	lasf->m_lasreader->open(fpi);
-// 	LASheader  &header = lasf->m_lasreader->header;
 
 	// calculate center of gravity 
 	double xc = (lasf->m_header->max_x + lasf->m_header->min_x) * 0.5;
@@ -151,8 +144,8 @@ bool LasFile::read(LasFile* lasf, std::string filename, char* parse_string)
 	{
 		glm::vec3 pt;
 		std::transform(intensities.begin(), intensities.end(), lasf->m_rgb.begin(), [&pt](unsigned short v) { pt.x = v; pt.y = v; pt.z = v; return pt; });
-		//intensities.clear();
 	}
+	intensities.clear();
 
 	auto result = std::minmax_element(lasf->m_rgb.begin(), lasf->m_rgb.end(), [](const glm::vec3 &a, const glm::vec3 &b) { return a.x < b.x; });
 	float min_r((*result.first).x), max_r((*result.second).x);
@@ -180,48 +173,8 @@ bool LasFile::read(LasFile* lasf, std::string filename, char* parse_string)
 		delete laswaveform13reader;
 	}
 
-//	if (lasf->m_lasreader->points_have_rgb)
-	//{
-		//lasf->m_rgb.resize(points_count);
-		//for (size_t i = 0; i < points_count; ++i)
-		//{
-		//	lasf->m_lasreader->read_point();
-
-		//	lasf->m_xyz[i].x = lasf->m_lasreader->point.get_x() * header.x_scale_factor + header.x_offset - xc;
-		//	lasf->m_xyz[i].y = lasf->m_lasreader->point.y * header.y_scale_factor + header.y_offset - yc;
-		//	lasf->m_xyz[i].z = lasf->m_lasreader->point.z * header.z_scale_factor + header.z_offset - zc;
-		//	
-		//	lasf->m_rgb[i].r = lasf->m_lasreader->rgb[0] / 65535.0;
-		//	lasf->m_rgb[i].g = lasf->m_lasreader->rgb[1] / 65535.0;
-		//	lasf->m_rgb[i].b = lasf->m_lasreader->rgb[2] / 65535.0;
-
-		//	if (i % nstep == 0)
-		//	{
-		//		dlg->StepIt();
-		//	}
-		//}
-	//}
-	//else
-	//{
-		//lasf->m_rgb.clear();
-		//for (size_t i = 0; i < points_count; ++i)
-		//{
-		//	lasf->m_lasreader->read_point();
-
-		//	lasf->m_xyz[i].x = lasf->m_lasreader->point.x * header.x_scale_factor + header.x_offset - xc;
-		//	lasf->m_xyz[i].y = lasf->m_lasreader->point.y * header.y_scale_factor + header.y_offset - yc;
-		//	lasf->m_xyz[i].z = lasf->m_lasreader->point.z * header.z_scale_factor + header.z_offset - zc;
-
-		//	if (i % nstep == 0)
-		//	{
-		//		dlg->StepIt();
-		//	}
-		//}
-	//}
 	dlg->SetPos(100);
 	delete dlg;
-
-	//fclose(fpi);
 
 	lasf->m_offset = glm::vec3(xc, yc, zc);
 

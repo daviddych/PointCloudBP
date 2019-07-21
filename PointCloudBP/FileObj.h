@@ -9,13 +9,15 @@ class FileObj
 {
 public:
 	FileObj();
-	~FileObj();
+	virtual ~FileObj();
 
 	virtual bool openfile(const char* filename, char* parse_string = "xyzirgb")=0;
 	std::vector<glm::vec3> get_xyz() { return m_xyz; }
 	std::vector<glm::vec3> get_rgb() { return m_rgb; }
 	glm::vec3 get_offset() { return m_offset; }
 	void update_offset(glm::vec3 offset);// reset data using a global offset.
+	static void normalize(std::vector<glm::vec3>& xyz, glm::vec3 offset); // 对xyz每一个元素偏移.
+	static glm::vec3 center(std::vector<glm::vec3>& xyz);    // calculate the center point
 
 	void release();
 public:

@@ -229,6 +229,7 @@
     <ClInclude Include="GraphicalObject.h" />
     <ClInclude Include="LasFile.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="PcdFile.h" />
     <ClInclude Include="PointCloudBP.h" />
     <ClInclude Include="PointCloudBPDoc.h" />
     <ClInclude Include="PointCloudBPView.h" />
@@ -269,6 +270,7 @@
     <ClCompile Include="GraphicalObject.cpp" />
     <ClCompile Include="LasFile.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="PcdFile.cpp" />
     <ClCompile Include="PointCloudBP.cpp" />
     <ClCompile Include="PointCloudBPDoc.cpp" />
     <ClCompile Include="PointCloudBPView.cpp" />
