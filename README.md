@@ -10,7 +10,9 @@ load, show and process 3D point cloud while from las or txt file format
 /bin/x64文件夹下面是编译好的可执行程序PointCloudBP.exe(Release版) 和 PointCloudBPd.exe(Debug版本)
 
 
-
+依赖：
+	PCL1.8.1, Eigen
+C:\Program Files\PCL 1.8.1\3rdParty\Boost\include\boost-1_64;C:\Program Files\PCL 1.8.1\3rdParty\Eigen\eigen3;C:\Program Files\PCL 1.8.1\include\pcl-1.8;D:\OpenSource\gl\glew-2.0.0\include;$(ProjectDir)gl;$(ProjectDir);$(ProjectDir)liblas;$(ProjectDir)inc;%(AdditionalIncludeDirectories)
 
 ```
 交互操作简介
