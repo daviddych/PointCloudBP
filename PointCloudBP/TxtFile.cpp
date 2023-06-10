@@ -55,7 +55,7 @@ bool CTxtFile::openfile_mapping(CTxtFile* txtf, const std::string& filename)
 
 	ptr = (char*)pvFile;
 	int columns = calc_columns(ptr);
-	if (columns != 3 && columns >= 6)
+	if (columns != 3 && columns > 6)
 	{
 		AfxMessageBox("Notes: txt file only can have 3 or more than 6 columns"); // 请注意：TXT文件应该有三列或者大于等于6列
 		return false;
